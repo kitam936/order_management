@@ -21,8 +21,10 @@ const form = useForm({
     item_info: page.props.old?.item_info ?? null,
     item_price: page.props.old?.item_price ?? null,
     item_cost: page.props.old?.item_cost ?? null,
-    item_image: null, // ファイルは保持不可（これは仕様です）
+    item_image: null,
 });
+
+
 
 const handleFileUpload = (event) => {
     form.item_image = event.target.files[0];

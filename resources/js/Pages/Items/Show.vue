@@ -43,6 +43,12 @@ const deleteItem = id => {
                                     </div>
 
                                     <div class="relative">
+                                        <label for="prod_code" class="leading-7 text-sm text-gray-600">商品番号</label>
+                                        <div id="prod_code" name="prod_code" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ item.prod_code }}</div>
+
+                                    </div>
+
+                                    <div class="relative">
                                         <label for="item_name" class="leading-7 text-sm text-gray-600">商品名</label>
                                         <div id="item_name" name="item_name" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ item.item_name }}</div>
 
@@ -71,12 +77,9 @@ const deleteItem = id => {
                                     <div class="p-2 w-full">
                                         <div class="relative">
                                             <div class="w-full mb-1">
-
                                                     <div v-if="item.item_image">
                                                             <img :src="`/storage/items/${item.item_image}`" alt="Item Image">
-
                                                     </div>
-
                                             </div>
                                         </div>
                                     </div>

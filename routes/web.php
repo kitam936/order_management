@@ -41,6 +41,8 @@ Route::resource('company', CompanyController::class) ->middleware(['auth', 'veri
 
 Route::resource('work', WorkController::class) ->middleware(['auth', 'verified']);
 
+Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+
 Route::resource('items', ItemController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('cars', CarController::class) ->middleware(['auth', 'verified']);
