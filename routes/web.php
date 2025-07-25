@@ -29,6 +29,8 @@ Route::get('/', function () {
     ]);
 });
 
+
+
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('shops', ShopController::class) ->middleware(['auth', 'verified']);
@@ -38,6 +40,8 @@ Route::resource('users', UserController::class) ->middleware(['auth', 'verified'
 Route::resource('company', CompanyController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('work', WorkController::class) ->middleware(['auth', 'verified']);
+
+Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
 
 Route::resource('items', ItemController::class) ->middleware(['auth', 'verified']);
 

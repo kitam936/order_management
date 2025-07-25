@@ -162,6 +162,13 @@ return [
         'company_name' => '会社名',
         'company_info' => '会社詳細',
         'company_tel' => '会社電話番号',
+        'item_category_id' => '種別',
+        'prod_code' => '製品品番',
+        'item_name' => '商品名',
+        'item_info' =>  '商品詳細',
+        'item_price' => '商品価格',
+        'item_cost' =>  '商品原価',
+        'item_image' => '商品画像',
 
 
     ]
