@@ -29,6 +29,8 @@ Route::get('/', function () {
     ]);
 });
 
+
+
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('shops', ShopController::class) ->middleware(['auth', 'verified']);
