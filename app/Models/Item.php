@@ -13,6 +13,7 @@ class Item extends Model
 
     protected $fillable = [
         'item_category_id',
+        'car_category_id',
         'prod_code',
         'item_name',
         'item_price',
@@ -20,6 +21,18 @@ class Item extends Model
         'item_info',
         'item_image',
     ];
+
+    public function scopeSearchItems($query, $input = null)
+        {
+            if(!empty($input)){
+                if(Item::where('item_name', 'like', '%'.$input . '%' )
+                ->orWhere('item_info', 'like', '%'.$input . '%')->exists())
+                {
+                return $query->where('item_name', 'like', '%'.$input . '%' )
+                ->orWhere('item_info', 'like', '%'.$input . '%');
+                }
+            }
+        }
 
     public function itemCategory()
     {

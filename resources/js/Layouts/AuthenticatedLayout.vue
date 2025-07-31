@@ -45,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     商品管理
                                 </NavLink>
+                                <NavLink
+                                :href="route('users.index')"
+                                :active="route().current('users.index')"
+                                >
+                                    User管理
+                                </NavLink>
 
                             </div>
                         </div>
@@ -159,6 +165,13 @@ const showingNavigationDropdown = ref(false);
                         >
                             商品管理
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
+                        >
+                            User管理
+                        </ResponsiveNavLink>
+
                     </div>
 
                     <!-- Responsive Settings Options -->

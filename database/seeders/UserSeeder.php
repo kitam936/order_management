@@ -16,10 +16,11 @@ class UserSeeder extends Seeder
         [
             'id' => 1,
             'name' => 'admin',
+            'kana' => 'アドミン',
             'email' => 'admin@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 1,
-            'shop_id' => 1001,
+            'shop_id' => 1101,
             'postcode' => '123-4567',
             'address' => '東京都千代田区1-1-1',
             'tel' => '03-1234-5678',
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
         [
             'id' => 2,
             'name' => 'cf_manager',
+            'kana' => 'シーエフマネージャー',
             'email' => 'cf_manager@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 3,
@@ -40,6 +42,7 @@ class UserSeeder extends Seeder
         [
             'id' => 9,
             'name' => 'test1',
+            'kana' => 'テスト1',
             'email' => 'test1@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 5,
@@ -52,10 +55,11 @@ class UserSeeder extends Seeder
         [
             'id' => 10,
             'name' => 'test2',
+            'kana' => 'テスト2',
             'email' => 'test2@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 3,
-            'shop_id' => 1201,
+            'shop_id' => 1101,
             'postcode' => '123-4567',
             'address' => '東京都千代田区4-4-4',
             'tel' => '03-4567-8901',
@@ -64,10 +68,11 @@ class UserSeeder extends Seeder
         [
             'id' => 11,
             'name' => 'test3',
+            'kana' => 'テスト3',
             'email' => 'test3@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 5,
-            'shop_id' => 1202,
+            'shop_id' => 1102,
             'postcode' => '123-4567',
             'address' => '東京都千代田区5-5-5',
             'tel' => '03-4567-8901',
@@ -76,6 +81,7 @@ class UserSeeder extends Seeder
         [
             'id' => 12,
             'name' => 'test4',
+            'kana' => 'テスト4',
             'email' => 'test4@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 99,
@@ -88,6 +94,7 @@ class UserSeeder extends Seeder
         [
             'id' => 13,
             'name' => 'test5',
+            'kana' => 'テスト5',
             'email' => 'test5@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 99,
@@ -100,10 +107,11 @@ class UserSeeder extends Seeder
         [
             'id' => 14,
             'name' => 'test6',
+            'kana' => 'テスト6',
             'email' => 'test6@test.com',
             'password' => Hash::make('password123'),
             'role_id' => 99,
-            'shop_id' => 1201,
+            'shop_id' => 1102,
             'postcode' => '123-4567',
             'address' => '東京都千代田区8-8-8',
             'tel' => '03-4567-8901',

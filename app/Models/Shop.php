@@ -10,6 +10,7 @@ use App\Models\Delivery;
 use App\Models\Area;
 use App\Models\Stock;
 use App\Models\Report;
+use App\Models\User;
 
 
 
@@ -34,9 +35,9 @@ class Shop extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function area()
+    public function user()
     {
-        return $this->belongsTo(Area::class);
+        return $this->hasMany(User::class);
     }
 
     public function sale()
@@ -53,6 +54,8 @@ class Shop extends Model
     {
         return $this->hasMany(Report::class);
     }
+
+
 
 
 }
