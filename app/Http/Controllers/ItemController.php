@@ -20,14 +20,35 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items=DB::table('items')
+        // $items=DB::table('items')
+        // ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+        // ->select(
+        //     'items.id',
+        //     'items.item_category_id',
+        //     'item_categories.item_category_name',
+        //     'items.item_name',
+        //     'items.item_price',
+        //     'items.item_cost',
+        //     'items.item_info',
+        //     'items.created_at',
+        // )
+        // ->orderBy('items.item_category_id', 'asc')
+        // ->orderBy('items.id', 'asc')
+        // ->paginate(30);
+
+        $items=Item::searchItems($request->search)
         ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+        ->join('car_categories', 'items.car_category_id', '=', 'car_categories.id')
+        ->where('item_category_id', 'like', '%' . $request->item_category_id . '%')
+        ->where('car_category_id', 'like', '%' . $request->car_category_id . '%')
         ->select(
             'items.id',
             'items.item_category_id',
             'item_categories.item_category_name',
+            'items.car_category_id',
+            'car_categories.car_name',
             'items.item_name',
             'items.item_price',
             'items.item_cost',
@@ -36,13 +57,29 @@ class ItemController extends Controller
         )
         ->orderBy('items.item_category_id', 'asc')
         ->orderBy('items.id', 'asc')
+        ->paginate(30);
+
+        $item_categories = DB::table('item_categories')
+            ->select(
+                'id',
+                'item_category_name',
+            )
+            ->get();
+
+        $car_categories = DB::table('car_categories')
+        ->select(
+            'id',
+            'car_name',
+        )
         ->get();
 
-        // dd($items);
+        // dd($items, $item_categories, $car_categories);
 
         return Inertia::render('Items/Index',
             [
                 'items' => $items,
+                'item_categories' => $item_categories,
+                'car_categories' => $car_categories,
             ]);
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
                 ->constrained('item_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->integer('car_category_id')->nullable();
             $table->string('prod_code')->nullable();
             $table->string('item_name')->nullable();
             $table->integer('item_price')->nullable();

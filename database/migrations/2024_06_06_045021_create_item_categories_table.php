@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('item_categories', function (Blueprint $table) {
             $table->id();
             $table->string('item_category_name');
+
             $table->text('item_category_info')->nullable();
             $table->integer('sort_order')->defoult(0);
             $table->timestamps();
