@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained('orders')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer('work_id');
+            // $table->integer('work_id')->nullable();
             $table->integer('item_id');
             $table->integer('item_price')->nullable();
             $table->integer('item_pcs')->default(0);

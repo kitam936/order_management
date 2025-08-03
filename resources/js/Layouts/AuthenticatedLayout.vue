@@ -52,6 +52,13 @@ const showingNavigationDropdown = ref(false);
                                     User管理
                                 </NavLink>
 
+                                <NavLink
+                                :href="route('orders.index')"
+                                :active="route().current('orders.index')"
+                                >
+                                    Order管理
+                                </NavLink>
+
                             </div>
                         </div>
 
@@ -165,11 +172,19 @@ const showingNavigationDropdown = ref(false);
                         >
                             商品管理
                         </ResponsiveNavLink>
+
                         <ResponsiveNavLink
                             :href="route('users.index')"
                             :active="route().current('users.index')"
                         >
                             User管理
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('orders.index')"
+                            :active="route().current('orders.index')"
+                        >
+                            Order管理
                         </ResponsiveNavLink>
 
                     </div>

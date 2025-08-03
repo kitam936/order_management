@@ -22,9 +22,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::searchUsers($request->search)
-        ->Where('users.shop_id', 'like', '%' . $request->shop_id . '%')
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->join('shops', 'users.shop_id', '=', 'shops.id')
+        ->Where('users.shop_id', 'like', '%' . $request->shop_id . '%')
         ->select(
             'users.id as user_id',
             'users.name',

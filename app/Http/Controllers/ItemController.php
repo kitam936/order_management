@@ -57,7 +57,8 @@ class ItemController extends Controller
         )
         ->orderBy('items.item_category_id', 'asc')
         ->orderBy('items.id', 'asc')
-        ->paginate(30);
+        ->paginate(30)
+        ->withQueryString();
 
         $item_categories = DB::table('item_categories')
             ->select(

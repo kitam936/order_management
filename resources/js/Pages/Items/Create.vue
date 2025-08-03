@@ -1,38 +1,38 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head ,Link} from '@inertiajs/vue3';
-import { reactive } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
-import { useForm ,usePage } from '@inertiajs/vue3'
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+    import { Head ,Link} from '@inertiajs/vue3';
+    import { reactive } from 'vue';
+    import { Inertia } from '@inertiajs/inertia';
+    import { useForm ,usePage } from '@inertiajs/vue3'
 
 
-defineProps({
-    errors : Object,
-    categories: Array,
-})
+    defineProps({
+        errors : Object,
+        categories: Array,
+    })
 
 
-const page = usePage();
+    const page = usePage();
 
-const form = useForm({
-    item_category_id: page.props.old?.item_category_id ?? null,
-    prod_code: page.props.old?.prod_code ?? null,
-    item_name: page.props.old?.item_name ?? null,
-    item_info: page.props.old?.item_info ?? null,
-    item_price: page.props.old?.item_price ?? null,
-    item_cost: page.props.old?.item_cost ?? null,
-    item_image: null,
-});
+    const form = useForm({
+        item_category_id: page.props.old?.item_category_id ?? null,
+        prod_code: page.props.old?.prod_code ?? null,
+        item_name: page.props.old?.item_name ?? null,
+        item_info: page.props.old?.item_info ?? null,
+        item_price: page.props.old?.item_price ?? null,
+        item_cost: page.props.old?.item_cost ?? null,
+        item_image: null,
+    });
 
 
 
-const handleFileUpload = (event) => {
-    form.item_image = event.target.files[0];
-}
+    const handleFileUpload = (event) => {
+        form.item_image = event.target.files[0];
+    }
 
-const storeItem = () => {
-    Inertia.post('/items', form)
-}
+    const storeItem = () => {
+        Inertia.post('/items', form)
+    }
 </script>
 
 <template>
