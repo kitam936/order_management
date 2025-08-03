@@ -22,7 +22,14 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pitin_date' => ['required'],
+            'shop_id' => ['required','integer'],
+            'car_id' => ['required','integer'],
+            'items' => ['required','array'],
+            'items.*.item_id' => ['required','integer'],
+            'items.*.pcs' => ['required','integer','min:0'],
+            'items.*.sales_price' => ['required','numeric','min:0'],
+            'items.*.work_fee' => ['required','numeric','min:0'],
         ];
     }
 }

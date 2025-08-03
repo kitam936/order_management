@@ -29,7 +29,10 @@ Route::get('/', function () {
     ]);
 });
 
-
+Route::middleware('auth')->group(function () {
+    Route::post('/orders/create2', [OrderController::class, 'create2'])->name('orders.create2');
+    Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+});
 
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
 
@@ -41,7 +44,7 @@ Route::resource('company', CompanyController::class) ->middleware(['auth', 'veri
 
 Route::resource('work', WorkController::class) ->middleware(['auth', 'verified']);
 
-Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+// Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
 
 Route::resource('items', ItemController::class) ->middleware(['auth', 'verified']);
 
@@ -52,6 +55,8 @@ Route::resource('meetings', MeetingController::class) ->middleware(['auth', 'ver
 Route::resource('reports', ReportController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('comments', CommentController::class) ->middleware(['auth', 'verified']);
+
+
 
 Route::resource('orders', OrderController::class) ->middleware(['auth', 'verified']);
 

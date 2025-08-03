@@ -15,6 +15,7 @@ class Comment extends Model
         'user_id',
         'report_id',
         'comment',
+        'flag'
     ];
 
     public function report()
