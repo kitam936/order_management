@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ShopSeeder::class,
             UserSeeder::class,
             PayMethodSeeder::class,
+            MakesSeeder::class,
             // BrandSeeder::class,
             // UnitSeeder::class,
 
