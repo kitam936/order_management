@@ -26,7 +26,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer('pay_method')->default(1); // 1: 現金, 2: クレジットカード, 3: 振込
+            $table->integer('pay_method'); // 1: 現金, 2: クレジットカード, 3: 振込
             $table->integer('nyukin_kingaku');
             $table->timestamps();
         });

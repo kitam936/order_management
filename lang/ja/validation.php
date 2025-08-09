@@ -169,6 +169,13 @@ return [
         'item_price' => '商品価格',
         'item_cost' =>  '商品原価',
         'item_image' => '商品画像',
+        'image1' => '画像1',
+        'image2' => '画像2',
+        'image3' => '画像3',
+        'image4' => '画像4',
+        'detail_id' => '詳細ID',
+        'title' => 'タイトル',
+        'report' => 'レポート',
 
 
     ]

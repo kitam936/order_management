@@ -9,6 +9,7 @@
     defineProps({
         errors : Object,
         categories: Array,
+        car_categories: Array,
     })
 
 
@@ -16,6 +17,7 @@
 
     const form = useForm({
         item_category_id: page.props.old?.item_category_id ?? null,
+        car_category_id: page.props.old?.car_category_id ?? null,
         prod_code: page.props.old?.prod_code ?? null,
         item_name: page.props.old?.item_name ?? null,
         item_info: page.props.old?.item_info ?? null,
@@ -60,6 +62,14 @@
                                         <select id="item_category_id" name="item_category_id" v-model="form.item_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                             <option value="" disabled>種別選択</option>
                                             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.item_category_name }}</option>
+                                        </select>
+                                        <div v-if="errors.item_category_id" class="text-red-500">{{ errors.item_category_id }}</div>
+                                    </div>
+                                    <div class="p-2 relative">
+                                        <label for="car_category_id" class="leading-7 text-sm text-gray-600">車種</label>
+                                        <select id="car_category_id" name="car_category_id" v-model="form.car_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <option value="" disabled>種別選択</option>
+                                            <option v-for="car_category in car_categories" :key="car_category.id" :value="car_category.id">{{ car_category.car_name }}</option>
                                         </select>
                                         <div v-if="errors.item_category_id" class="text-red-500">{{ errors.item_category_id }}</div>
                                     </div>

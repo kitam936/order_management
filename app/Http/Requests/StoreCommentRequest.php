@@ -22,7 +22,8 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'report_id' => ['required','integer'],
+            'comment' => ['max:255', 'required'],
         ];
     }
 }
