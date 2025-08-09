@@ -198,7 +198,7 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect()->route('orders.index')->with(['message'=>'更新されました','status'=>'info']);
+            return redirect()->route('orders.index')->with(['message'=>'発注登録されました','status'=>'info']);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -247,29 +247,62 @@ class OrderController extends Controller
         $order_fs = DB::table('order_details')
             ->join('items', 'order_details.item_id', '=', 'items.id')
             ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
+            ->leftjoin('reports', 'order_details.id', '=', 'reports.detail_id')
             ->where('order_details.order_id', $order->id)
-            ->select(
-                'order_details.id as detail_id',
+            ->groupBy(
+                'order_details.id',
                 'order_details.order_id',
-                'order_details.id as order_detail_id',
                 'order_details.item_id',
                 'items.item_name',
                 'items.item_info',
                 'items.item_price',
                 'order_details.item_pcs',
-                'order_details.item_price as sales_price',
+                'order_details.item_price',
                 'order_details.work_fee',
                 'order_details.detail_info',
                 'order_details.detail_status',
                 'detail_statuses.detail_status_name',
+                'reports.id',
             )
+            ->selectRaw(
+                'order_details.id as detail_id,
+                order_details.order_id,
+                order_details.id as order_detail_id,
+                order_details.item_id,
+                items.item_name,
+                items.item_info,
+                items.item_price,
+                order_details.item_pcs,
+                order_details.item_price as sales_price,
+                order_details.work_fee,
+                order_details.detail_info,
+                order_details.detail_status,
+                detail_statuses.detail_status_name,
+                COUNT(reports.id) as report_cnt'
+            )
+            // ->select(
+            //     'order_details.id as detail_id',
+            //     'order_details.order_id',
+            //     'order_details.id as order_detail_id',
+            //     'order_details.item_id',
+            //     'items.item_name',
+            //     'items.item_info',
+            //     'items.item_price',
+            //     'order_details.item_pcs',
+            //     'order_details.item_price as sales_price',
+            //     'order_details.work_fee',
+            //     'order_details.detail_info',
+            //     'order_details.detail_status',
+            //     'detail_statuses.detail_status_name',
+            // )
+            ->distinct()
             ->get();
 
         $order_total = DB::table('order_details')
             ->where('order_id', $order->id)
             ->sum(DB::raw('item_price * item_pcs + work_fee'));
 
-        // dd($order_h, $order_f, $order_total);
+        // dd($order_h, $order_fs, $order_total);
 
             return Inertia::render('Orders/Show', [
                 'order_h' => $order_h,
@@ -429,7 +462,7 @@ class OrderController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('orders.index')->with(['message'=>'発注登録されました','status'=>'info']);
+            return redirect()->route('orders.index')->with(['message'=>'発注が更新されました','status'=>'info']);
         } catch (\Exception $e) {
             DB::rollBack();
             logger()->error('Order更新エラー', ['message' => $e->getMessage()]);

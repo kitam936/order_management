@@ -22,7 +22,22 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'detail_id' => ['required','integer'],
+            'title' => ['required', 'string', 'max:30', ],
+            'report' => ['max:255', 'required'],
+            'image1'=>['image','mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:3048', 'nullable'],
+            'image2'=>['image','mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:3048', 'nullable'],
+            'image3'=>['image','mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:3048', 'nullable'],
+            'image4'=>['image','mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:3048', 'nullable'],
         ];
+    }
+
+    public function messages()
+    {
+        return [
+        'image' => '指定されたファイルが画像ではありません。',
+        'mines' => '指定された拡張子（jpg/jpeg/png）ではありません。',
+        'max' => 'ファイルサイズは3MB以内にしてください。',
+    ];
     }
 }

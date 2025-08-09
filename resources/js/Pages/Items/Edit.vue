@@ -10,12 +10,14 @@ import { useForm } from '@inertiajs/vue3'
 const props = defineProps({
     item: Object,
     categories: Array,
+    car_categories: Array,
     errors : Object,
 })
 
 const form = useForm({
     id: props.item.id,
     item_category_id: props.item.item_category_id ,
+    car_category_id: props.item.car_category_id ,
     prod_code: props.item.prod_code ,
     item_name: props.item.item_name ,
     item_info: props.item.item_info ,
@@ -37,6 +39,7 @@ const updateItem = (id) => {
 
     formData.append('id', form.id);
     formData.append('item_category_id', form.item_category_id);
+    formData.append('car_category_id', form.car_category_id);
     formData.append('prod_code', form.prod_code);
     formData.append('item_name', form.item_name);
     formData.append('item_price', form.item_price);
@@ -87,6 +90,14 @@ const deleteItem = id => {
                                         <select id="item_category_id" name="item_category_id" v-model="form.item_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                             <option value="" disabled>種別選択</option>
                                             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.item_category_name }}</option>
+                                        </select>
+                                        <div v-if="errors.item_category_id" class="text-red-500">{{ errors.item_category_id }}</div>
+                                    </div>
+                                    <div class="p-2 relative">
+                                        <label for="car_category_id" class="leading-7 text-sm text-gray-600">車種</label>
+                                        <select id="car_category_id" name="car_category_id" v-model="form.car_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <option value="" disabled>車種選択</option>
+                                            <option v-for="car_category in car_categories" :key="car_category.id" :value="car_category.id">{{ car_category.car_name }}</option>
                                         </select>
                                         <div v-if="errors.item_category_id" class="text-red-500">{{ errors.item_category_id }}</div>
                                     </div>

@@ -96,8 +96,16 @@ class ItemController extends Controller
         )
         ->get();
 
+        $car_categories = DB::table('car_categories')
+        ->select(
+            'id',
+            'car_name',
+        )
+        ->get();
+
         return Inertia::render('Items/Create', [
             'categories' => ItemCategory::all(),
+            'car_categories' => $car_categories,
             'old' => session()->getOldInput(),
             'errors' => session('errors') ? session('errors')->getBag('default')->getMessages() : [],
         ]);
@@ -188,6 +196,7 @@ class ItemController extends Controller
 
         Item::create([
             'item_category_id' => $request->item_category_id,
+            'car_category_id' => $request->car_category_id,
             'prod_code' => $request->prod_code,
             'item_name' => $request->item_name,
             'item_price' => $request->item_price,
@@ -211,11 +220,14 @@ class ItemController extends Controller
     {
         $item=DB::table('items')
         ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+        ->join('car_categories', 'items.car_category_id', '=', 'car_categories.id')
         ->where('items.id', $item->id)
         ->select(
             'items.id',
             'items.item_category_id',
             'item_categories.item_category_name',
+            'items.car_category_id',
+            'car_categories.car_name',
             'items.prod_code',
             'items.item_name',
             'items.item_price',
@@ -243,11 +255,14 @@ class ItemController extends Controller
     {
         $item=DB::table('items')
         ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+        ->join('car_categories', 'items.car_category_id', '=', 'car_categories.id')
         ->where('items.id', $item->id)
         ->select(
             'items.id',
             'items.item_category_id',
             'item_categories.item_category_name',
+            'items.car_category_id',
+            'car_categories.car_name',
             'items.prod_code',
             'items.item_name',
             'items.item_price',
@@ -260,11 +275,19 @@ class ItemController extends Controller
         ->orderBy('items.id', 'asc')
         ->first();
 
+        $car_categories = DB::table('car_categories')
+        ->select(
+            'id',
+            'car_name',
+        )
+        ->get();
+
         // dd($item);
 
         return Inertia::render('Items/Edit', [
             'item' => $item,
             'categories' => ItemCategory::all(),
+            'car_categories' => $car_categories,
             // 'old' => session()->getOldInput(),
             // 'errors' => session('errors') ? session('errors')->getBag('default')->getMessages() : [],
         ]);
@@ -329,6 +352,7 @@ class ItemController extends Controller
 
         $item = Item::findOrFail($item->id);
         $item->item_category_id = $request->item_category_id;
+        $item->car_category_id = $request->car_category_id;
         $item->prod_code = $request->prod_code;
         $item->item_name = $request->item_name;
         $item->item_price = $request->item_price;

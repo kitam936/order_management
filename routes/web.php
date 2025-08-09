@@ -32,6 +32,14 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::post('/orders/create2', [OrderController::class, 'create2'])->name('orders.create2');
     Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+    Route::get('/reports/{id}', [ReportController::class, 'index'])->name('reports.index2');
+    Route::get('/reports/create/{id}', [ReportController::class, 'create'])->name('reports.create2');
+    Route::get('/reports/show/{report}', [ReportController::class, 'show'])->name('reports.show2');
+    Route::get('/comments/create/{id}', [CommentController::class, 'comment_create'])->name('comments.create2');
+    Route::delete('del_image1', [ReportController::class, 'del_image1'])->name('reports.del_image1');
+    Route::delete('del_image2', [ReportController::class, 'del_image2'])->name('reports.del_image2');
+    Route::delete('del_image3', [ReportController::class, 'del_image3'])->name('reports.del_image3');
+    Route::delete('del_image4', [ReportController::class, 'del_image4'])->name('reports.del_image4');
 });
 
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
@@ -51,6 +59,7 @@ Route::resource('items', ItemController::class) ->middleware(['auth', 'verified'
 Route::resource('cars', CarController::class) ->middleware(['auth', 'verified']);
 
 Route::resource('meetings', MeetingController::class) ->middleware(['auth', 'verified']);
+
 
 Route::resource('reports', ReportController::class) ->middleware(['auth', 'verified']);
 

@@ -116,13 +116,17 @@ const deleteOrder = (id) => {
                             <th class="w-3/13 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">工賃</th>
                             <th class="w-3/13 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">小計</th>
                             <th class="w-3/13 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">詳細</th>
+                            <th class="w-3/13 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Report</th>
                             <th class="w-3/13 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Status</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr v-for="order_f in order_fs" :key="order_f.detail_id">
-                            <td >{{ order_f.detail_id }}</td>
+                            <!-- <td >{{ order_f.detail_id }}</td> -->
+                            <td class="border-b-2 border-gray-200">
+                                <Link class="text-indigo-500" :href="route('reports.index2', { id: order_f.detail_id })">{{ order_f.detail_id }}</Link>
+                            </td>
                             <td class="w-40">{{ order_f.item_name }}</td>
                             <td class="w-40">{{ order_f.item_price }}</td>
                             <td class="w-40">{{ order_f.sales_price }}</td>
@@ -130,6 +134,7 @@ const deleteOrder = (id) => {
                             <td class="w-60">{{ order_f.work_fee }}</td>
                             <td class="w-60">{{ order_f.item_pcs * order_f.sales_price + order_f.work_fee }}</td>
                             <td class="w-60">{{ order_f.detail_info }}</td>
+                            <td class="w-60">{{ order_f.report_cnt }}</td>
                             <td class="w-60">{{ order_f.detail_status_name }}</td>
                         </tr>
 
