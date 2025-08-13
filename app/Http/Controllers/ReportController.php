@@ -33,7 +33,9 @@ class ReportController extends Controller
             ->get();
 
         $detail = DB::table('order_details')
+            ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
             ->where('order_details.id', $id)
+            ->select(['order_details.id', 'order_details.order_id','detail_statuses.detail_status_name','detail_info','order_details.created_at'])
             ->first();
 
         // dd($reports, $detail);

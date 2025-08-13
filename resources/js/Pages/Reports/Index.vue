@@ -23,7 +23,7 @@
     <AuthenticatedLayout>
         <template #header>
 
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Report一覧</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">作業詳細/Report一覧</h2>
         </template>
 
         <div class="py-6">
@@ -32,15 +32,28 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage/>
                     <div class="p-6 text-gray-900">
+                        <div class="flex">
                         <div class="ml-24 mb-8">
                             <Link as="button" :href="route('reports.create2',{id:props.detail.id})" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Report登録</Link>
                         </div>
 
+                        <div class="ml-24 mb-8">
+                            <Link as="button" :href="route('order_detail.edit',{id:props.detail.id})" class="w-32 h-8 bg-green-500 text-sm text-white ml-0 hover:bg-green-600 rounded">作業詳細編集</Link>
+                        </div>
+                        </div>
+
                         <div class="p-2 w-full">
+                            <div class="flex">
                             <div class="relative">
                                 <label for="detail_id" class="leading-7 text-sm text-gray-600">Detail_ID</label>
                                 <div id="detail_id" name="detail_id" class="w-24 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ props.detail.id }}</div>
 
+                            </div>
+                            <div class="ml-2 relative">
+                                <label for="detail_status" class="leading-7 text-sm text-gray-600">Status</label>
+                                <div type="text" id="detail_status" name="detail_status"  class="w-32 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ props.detail.detail_status_name }}</div>
+
+                            </div>
                             </div>
                             <div class="relative">
                                 <label for="detail_info" class="leading-7 text-sm text-gray-600">詳細</label>
