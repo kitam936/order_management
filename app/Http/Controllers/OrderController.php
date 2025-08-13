@@ -13,6 +13,7 @@ use inertia\Inertia;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\OrderDetail;
+use App\Models\Seikyu;
 use Carbon\Carbon;
 
 
@@ -387,6 +388,10 @@ class OrderController extends Controller
             ->select('id as order_status', 'order_status_name')
             ->get();
 
+        $detail_statuses = DB::table('detail_statuses')
+            ->orderBy('id', 'asc')
+            ->get();
+
 
         // dd($order_h, $order_fs, $order_total);
 
@@ -397,6 +402,7 @@ class OrderController extends Controller
                 'items' => $items,
                 'shops' => $shops,
                 'order_statuses' => $order_statuses,
+                'detail_statuses' => $detail_statuses,
             ]);
     }
 
@@ -411,7 +417,7 @@ class OrderController extends Controller
 
         $staff_id = Auth::user()->id;
 
-        // dd($order->id,$request->all(), $user_id, $staff_id);
+        // dd($request->all());
 
         DB::beginTransaction();
         try {
@@ -455,14 +461,14 @@ class OrderController extends Controller
                     'item_price'  => $item['sales_price'],
                     'work_fee'     => $item['work_fee'] ?? 0,
                     'detail_info'  => $item['detail_info'] ?? '',
+                    'detail_status' => $item['detail_status'] ?? 1, // 初期状態は未処理
                     'created_at'   => now(),
                     'updated_at'   => now(),
                 ]);
-
             }
 
             DB::commit();
-            return redirect()->route('orders.index')->with(['message'=>'発注が更新されました','status'=>'info']);
+            return redirect()->route('orders.show', ['order' => $order->id])->with(['message'=>'更新されました','status'=>'info']);
         } catch (\Exception $e) {
             DB::rollBack();
             logger()->error('Order更新エラー', ['message' => $e->getMessage()]);
@@ -479,4 +485,332 @@ class OrderController extends Controller
 
         return to_route('orders.index')->with(['message'=>'削除されました','status'=>'alert']);
     }
+
+    public function detail_edit($id)
+    {
+        $detail_statuses = DB::table('detail_statuses')
+        ->orderBy('id', 'asc')
+        ->get();
+
+        $detail = DB::table('order_details')
+            ->join('items', 'order_details.item_id', '=', 'items.id')
+            ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
+            ->where('order_details.id', $id)
+            ->select(
+                'order_details.id as detail_id',
+                'order_details.order_id',
+                'order_details.item_id',
+                'items.item_name',
+                'items.item_info',
+                'items.item_price',
+                'order_details.item_pcs',
+                'order_details.item_price as sales_price',
+                'order_details.work_fee',
+                'order_details.detail_info',
+                'order_details.detail_status',
+                'detail_statuses.detail_status_name'
+            )
+            ->first();
+
+        // dd($detail, $detail_statuses);
+
+        return Inertia::render('Orders/DetailEdit', [
+            'detail' => $detail,
+            'detail_statuses' => $detail_statuses,
+        ]);
+    }
+
+    public function detail_update(Request $request, $id)
+    {
+        // dd($request->all());
+
+        // dd($is_yet);
+
+        $validated = $request->validate([
+            'detail_info' => 'nullable|string',
+            'detail_status' => 'required|integer|exists:detail_statuses,id',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            DB::table('order_details')
+                ->where('id', $request->detail_id) ->update([
+                    'detail_info' => $validated['detail_info'] ?? '',
+                    'detail_status' => $validated['detail_status'],
+                    'updated_at' => now(),
+                ]);
+
+                $is_yet = DB::table('order_details')
+                    ->where('order_id', $request->order_id)
+                    ->where('detail_status', '<',9) // 未処理のステータス
+                    ->exists();
+
+                if (!$is_yet) {
+                    // 全ての作業が完了した場合は、注文ステータスを完了に設定
+                    // dd($request->order_id);
+                    DB::table('orders')
+                        ->where('id', $request->order_id)
+                        ->update([
+                            'order_status' => 7, // 完了ステータス
+                            'updated_at' => now(),
+                        ]);
+                }else {
+                    // まだ未処理の作業がある場合は、注文ステータスを未処理に設定
+                    DB::table('orders')
+                        ->where('id', $request->order_id)
+                        ->update([
+                            'order_status' => 5, // 未処理ステータス
+                            'updated_at' => now(),
+                        ]);
+                }
+
+
+            DB::commit();
+
+            sleep(1); // データベースの更新が反映されるまで少し待つ
+
+
+
+
+            return redirect()->route('orders.show', ['order' => $request->order_id])->with(['message'=>'作業詳細が更新されました','status'=>'info']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger()->error('OrderDetail更新エラー', ['message' => $e->getMessage()]);
+            return back()->withErrors(['error' => '更新に失敗しました']);
+        }
+
+    }
+
+    public function confirm($id)
+    {
+        // dd($order);
+        $order_h = DB::table('orders')
+            ->join('users as customers', 'orders.user_id', '=', 'customers.id')
+            ->join('users as staffs', 'orders.staff_id', '=', 'staffs.id')
+            ->join('cars', 'orders.car_id', '=', 'cars.id')
+            ->join('order_statuses', 'orders.order_status', '=', 'order_statuses.id')
+            ->join('shops', 'orders.shop_id', '=', 'shops.id')
+            ->leftJoin('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->where('orders.id', $id)
+            ->select(
+                'orders.id as order_id',
+                'orders.car_id',
+                'orders.shop_id',
+                'orders.staff_id',
+                'orders.order_info',
+                'car_categories.car_name',
+                'customers.id as customer_id',
+                'customers.name as customer_name',
+                'shops.shop_name',
+                'staffs.name as staff_name',
+                'cars.car_info',
+                'orders.pitin_date',
+                'orders.order_status',
+                'order_statuses.order_status_name',
+            )
+            ->first();
+
+            if ($order_h && $order_h->pitin_date) {
+                $order_h->pitin_date = Carbon::parse($order_h->pitin_date)->format('Y-m-d');
+            }
+
+        $order_fs = DB::table('order_details')
+            ->join('items', 'order_details.item_id', '=', 'items.id')
+            ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
+            ->where('order_details.order_id', $id)
+            ->select(
+                'order_details.id as detail_id',
+                'order_details.order_id',
+                'order_details.id as order_detail_id',
+                'order_details.item_id',
+                'items.item_name',
+                'items.item_info',
+                'items.item_price',
+                'order_details.item_pcs',
+                'order_details.item_price as sales_price',
+                'order_details.work_fee',
+                'order_details.detail_info',
+                'order_details.detail_status',
+                'detail_statuses.detail_status_name',
+            )
+            ->get();
+
+        $order_total = DB::table('order_details')
+            ->where('order_id', $id)
+            ->sum(DB::raw('item_price * item_pcs + work_fee'));
+
+        $items = DB::table('items')
+        ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+        ->select('items.id as id', 'item_categories.id as item_category_id','item_categories.item_category_name', 'items.item_name',
+            'items.item_info', 'items.item_price')
+        ->get();
+
+        $shops = DB::table('shops')
+        ->where('shops.id', '>',1100)
+        ->select('id as shop_id', 'shop_name')
+        ->get();
+
+        $order_statuses = DB::table('order_statuses')
+            ->select('id as order_status', 'order_status_name')
+            ->get();
+
+
+        // dd($order_h, $order_fs, $order_total);
+
+            return Inertia::render('Orders/Confirm', [
+                'order_h' => $order_h,
+                'order_fs' => $order_fs,
+                'order_total' => $order_total,
+                'items' => $items,
+                'shops' => $shops,
+                'order_statuses' => $order_statuses,
+            ]);
+    }
+
+    public function seikyu_index(Request $request)
+    {
+        $customers = DB::table('seikyus')
+        ->join('users', 'seikyus.user_id', '=', 'users.id')
+        // ->where('users.role_id', 99) // Assuming role_id 3 is for customers
+        // ->select('id', 'name', 'email', 'postcode', 'address', 'tel')
+        ->select('seikyus.user_id as id', 'users.name')
+        ->groupBy('seikyus.user_id', 'users.name')
+        ->distinct()
+        ->orderBy('seikyus.user_id', 'asc')
+        ->get();
+
+        $car_categories = DB::table('seikyus')
+        ->join('cars', 'seikyus.car_id', '=', 'cars.id')
+        ->join('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+        ->distinct()
+        ->select('car_category_id as id','car_name',    )
+        ->get();
+
+        $seikyus = DB::table('seikyus')
+            ->join('users as customers', 'seikyus.user_id', '=', 'customers.id')
+            ->join('users as staffs', 'seikyus.staff_id', '=', 'staffs.id')
+            ->join('cars', 'seikyus.car_id', '=', 'cars.id')
+            ->join('seikyu_statuses', 'seikyus.seikyu_status', '=', 'seikyu_statuses.id')
+            ->leftJoin('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->join('shops', 'seikyus.shop_id', '=', 'shops.id')
+            ->leftjoin('pays', 'seikyus.id', '=', 'pays.seikyu_id')
+            ->select(
+                'seikyus.id as seikyu_id',
+                'seikyus.seikyu_date',
+                'customers.name as customer_name',
+                'staffs.name as staff_name',
+                'cars.car_info',
+                'car_categories.car_name',
+                'shops.shop_name',
+                'seikyus.seikyu_kingaku',
+                'pays.paid_date',
+                'pays.paid_kingaku',
+                'seikyus.seikyu_status',
+                'seikyus.seikyu_info',
+                'seikyu_statuses.seikyu_status_name',
+            )
+            ->where('car_category_id', 'like', '%' . $request->car_category_id . '%')
+            ->where('seikyus.user_id',  'like', '%' . $request->customer_id . '%')
+            ->where('customers.name', 'like', '%' . $request->search . '%')
+            ->orderBy('seikyus.id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+            $total = DB::table('seikyus')
+            ->join('users as customers', 'seikyus.user_id', '=', 'customers.id')
+            ->join('users as staffs', 'seikyus.staff_id', '=', 'staffs.id')
+            ->join('cars', 'seikyus.car_id', '=', 'cars.id')
+            ->join('seikyu_statuses', 'seikyus.seikyu_status', '=', 'seikyu_statuses.id')
+            ->leftJoin('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->join('shops', 'seikyus.shop_id', '=', 'shops.id')
+            ->leftjoin('pays', 'seikyus.id', '=', 'pays.seikyu_id')
+            ->where('car_category_id', 'like', '%' . $request->car_category_id . '%')
+            ->where('seikyus.user_id',  'like', '%' . $request->customer_id . '%')
+            ->where('customers.name', 'like', '%' . $request->search . '%')
+            ->selectRaw(
+                'sum(seikyus.seikyu_kingaku) as total_seikyu_kingaku,
+                sum(pays.paid_kingaku) as total_paid_kingaku'
+            )
+            ->first();
+
+        // dd($seikyus,  $total);
+
+        return Inertia::render('Orders/SeikyuIndex', [
+            'seikyus' => $seikyus,
+            'customers' => $customers,
+            'car_categories' => $car_categories,
+            'total' => $total,
+        ]);
+    }
+
+    public function seikyu_store(Request $request)
+    {
+        $user_id = DB::table('cars')
+            ->where('id', $request->car_id)
+            ->value('user_id');
+
+        $staff_id = Auth::user()->id;
+
+        // dd($request->all(), $user_id, $staff_id);
+
+        DB::beginTransaction();
+        try {
+            // ヘッダ更新
+            DB::table('orders')
+                ->where('id', $request->order_id)
+                ->update([
+                    'order_status' => 10 ,
+                    'updated_at' => now(),
+                ]);
+
+            // 旧明細を削除
+            DB::table('order_details')->where('order_id', $request->order_id)->delete();
+
+            // 新明細を挿入
+            foreach ($request->items as $item) {
+                DB::table('order_details')->insert([
+                    'order_id'     => $request->order_id,
+                    'item_id'      => $item['item_id'],
+                    'item_pcs'          => $item['pcs'],
+                    'item_price'  => $item['sales_price'],
+                    'work_fee'     => $item['work_fee'] ?? 0,
+                    'detail_info'  => $item['detail_info'] ?? '',
+                    'detail_status' => 9, // 初期状態は未処理
+                    'created_at'   => now(),
+                    'updated_at'   => now(),
+                ]);
+            }
+
+            // バリデーション（必要に応じて調整）
+            // $validated = $request->validate([
+            //     'order_id' => 'required|integer|exists:orders,id',
+            //     'seikyu_date' => 'required',
+            //     'shop_id'    => 'required|integer',
+            //     'car_id'     => 'required|integer',
+            //     'seikyur_info' => 'nullable|string',
+            //     'seikyu_kingaku' => 'required|numeric|min:0',
+            // ]);
+
+            $seikyu = Seikyu::create([
+                'seikyu_date' => $request->seikyu_date,
+                'user_id'    => $user_id,
+                'staff_id'   => $staff_id,
+                'order_id' => $request->order_id,
+                'car_id'     => $request->car_id,
+                'shop_id'    => $request->shop_id,
+                'seikyu_info' => $request->seikyu_info,
+                'seikyu_kingaku' => $request->seikyu_kingaku,
+                'seikyu_status' => 1, // 初期状態は未処理
+            ]);
+
+            DB::commit();
+            return redirect()->route('seikyu.index')->with(['message'=>'請求が登録されました','status'=>'info']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger()->error('請求登録エラー', ['message' => $e->getMessage()]);
+            return back()->withErrors(['error' => '登録に失敗しました']);
+        }
+    }
+
+
 }

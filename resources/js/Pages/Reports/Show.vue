@@ -93,7 +93,7 @@
                                                         </div>
 
                                                 </div>
-                                                <div v-if="report.image4" class="w-1/2 mb-1">
+                                                <div v-if="report.image4" class="w-full mb-1">
                                                     <label for="image4" class="leading-7 text-sm mt-2 text-gray-800 dark:text-gray-200 ">画像4</label>
                                                         <div >
                                                             <img :src="`/storage/reports/${report.image4}`" alt="Image4">

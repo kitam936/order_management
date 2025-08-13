@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head ,Link} from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
+import FlashMessage from '@/Components/FlashMessage.vue';
 
 defineProps({
     order_h: Object,
@@ -25,10 +26,13 @@ const deleteOrder = (id) => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Order詳細</h2>
             <div class="flex">
             <div class="h-10 p-2 w-full">
-                <Link as="button" :href="route('orders.edit',{order:order_h.order_id})" class="w-36 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-12 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</Link>
+                <Link as="button" :href="route('orders.edit',{order:order_h.order_id})" class="w-36 flex mx-auto text-white h-10 bg-indigo-500 border-0 py-2 px-12 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</Link>
+            </div>
+            <div v-if="order_h.order_status == 9" class="h-10 p-2 w-full">
+                <Link as="button" :href="route('order.confirm',{id:order_h.order_id})" class="w-36 flex mx-auto text-white bg-green-500 border-0 h-10 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">売上確定</Link>
             </div>
             <div class="h-10 p-2 w-full">
-                <button class="w-36 flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" @click="deleteOrder(order_h.order_id)" >削除する</button>
+                <button class="w-36 flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded h-10 text-lg" @click="deleteOrder(order_h.order_id)" >削除する</button>
             </div>
             </div>
         </template>
@@ -38,6 +42,7 @@ const deleteOrder = (id) => {
 
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <FlashMessage/>
                     <div class="p-2 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 

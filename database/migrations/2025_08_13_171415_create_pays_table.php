@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nyukins', function (Blueprint $table) {
+        Schema::create('pays', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('nyukin_date');
-            $table->foreignId('sales_id')
-                ->constrained('sales')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->foreignId('shop_id')
-                ->constrained('shops')
+            $table->dateTime('paid_date');
+            $table->foreignId('seikyu_id')
+                ->constrained('seikyus')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('user_id')
@@ -27,7 +23,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('pay_method'); // 1: 現金, 2: クレジットカード, 3: 振込
-            $table->integer('nyukin_kingaku');
+            $table->integer('paid_kingaku');
             $table->timestamps();
         });
     }
@@ -37,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nyukins');
+        Schema::dropIfExists('pays');
     }
 };

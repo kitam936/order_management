@@ -59,6 +59,13 @@ const showingNavigationDropdown = ref(false);
                                     Order管理
                                 </NavLink>
 
+                                <NavLink
+                                :href="route('seikyu.index')"
+                                :active="route().current('seikyu.index')"
+                                >
+                                    請求管理
+                                </NavLink>
+
                             </div>
                         </div>
 
@@ -185,6 +192,13 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('orders.index')"
                         >
                             Order管理
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('seikyu.index')"
+                            :active="route().current('seikyu.index')"
+                        >
+                            請求管理
                         </ResponsiveNavLink>
 
                     </div>

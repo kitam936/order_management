@@ -17,44 +17,44 @@ class MakesSeeder extends Seeder
             'id' => 1,
             'makes_name' => 'AlfaRomeo',
             'makes_info' => 'AlfaRomeo',
-            'sort' => '1',
+            'sort_order' => '1',
         ],
         [
             'id' => 2,
             'makes_name' => 'Abarth',
             'makes_info' => 'Abarth',
-            'sort' => '2',
+            'sort_order' => '2',
         ],
         [
             'id' => 3,
             'makes_name' => 'Fiat',
             'makes_info' => 'Fiat',
-            'sort' => '3',
+            'sort_order' => '3',
         ],
         [
             'id' => 4,
             'makes_name' => 'Renault',
             'makes_info' => 'Renault',
-            'sort' => '4',
+            'sort_order' => '4',
         ],
         [
             'id' => 5,
             'makes_name' => 'Peugeot',
             'makes_info' => 'Peugeot',
-            'sort' => '5',
+            'sort_order' => '5',
         ],
         [
             'id' => 6,
             'makes_name' => 'Alpine',
             'makes_info' => 'Alpine',
-            'sort' => '6',
+            'sort_order' => '6',
         ],
 
         [
             'id' => 9,
             'makes_name' => 'Others',
             'makes_info' => 'Others',
-            'sort' => '9',
+            'sort_order' => '9',
         ]
 
 

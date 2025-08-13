@@ -14,7 +14,6 @@
         order_h: Object,
         order_fs: Array,
         order_statuses: Array,
-        detail_statuses: Array,
     });
 
     // pcs（選択肢）を文字列ではなく数値で定義する
@@ -35,7 +34,7 @@
                     pcs: detail.item_pcs,
                     work_fee: detail.work_fee,
                     detail_info: detail.detail_info || '',
-                    detail_status: detail.detail_status || '',
+
                 };
             } else {
                 return {
@@ -46,7 +45,7 @@
                     pcs: 0,
                     work_fee: 0,
                     detail_info: '',
-                    detail_status: '',
+
                 };
             }
         })
@@ -71,7 +70,7 @@
                 work_fee: item.work_fee,
                 sales_price: item.sales_price,
                 detail_info: item.detail_info,
-                detail_status: item.detail_status || '',
+
             }));
 
         form.put(route('orders.update', props.order_h.order_id), {
@@ -99,7 +98,7 @@
             itemList.value[index].sales_price = selectedItem.item_price;
             itemList.value[index].work_fee = selectedItem.work_fee || 0;
             itemList.value[index].detail_info = selectedItem.detail_info || '';
-            itemList.value[index].detail_status = selectedItem.detail_status || '';
+
         } else {
             itemList.value[index].name = '';
             itemList.value[index].price = 0;
@@ -107,7 +106,7 @@
             itemList.value[index].pcs = 0;
             itemList.value[index].work_fee = 0;
             itemList.value[index].detail_info = '';
-            itemList.value[index].detail_status = '';
+
         }
     }
     </script>
@@ -184,7 +183,6 @@
                                                         class="w-full bg-gray-100 rounded border border-gray-300 h-16 text-base text-gray-700 py-1 px-3 resize-none"></textarea>
                                                     <div v-if="errors.order_info" class="text-red-500">{{ errors.order_info }}</div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -205,7 +203,7 @@
                                         <table class="bg-white table-auto w-full text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>id</th><th>品名</th><th>マスタ単価</th><th>販売単価</th><th>数量</th><th>工賃</th><th>小計</th><th>詳細</th><th>Status</th>
+                                                    <th>id</th><th>品名</th><th>マスタ単価</th><th>販売単価</th><th>数量</th><th>工賃</th><th>小計</th><th>詳細</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -229,20 +227,6 @@
                                                     <td><input type="number" v-model.number="item.work_fee" class="w-24 text-right rounded" /></td>
                                                     <td>{{ item.pcs * item.sales_price + item.work_fee }}</td>
                                                     <td><input type="text" v-model="item.detail_info" class="w-full rounded" placeholder="詳細情報" /></td>
-                                                    <!-- <td><input v-model="item.detail_status" class="w-24 rounded"  /></td> -->
-                                                    <td>
-                                                        <div class="p-0 ml-2 relative">
-                                                            <select v-model.number="item.detail_status"
-                                                                class="w-full bg-gray-100 rounded border border-gray-300 text-base text-gray-700 py-1 px-3">
-                                                                <!-- <option value="" disabled>Status選択</option> -->
-                                                                <option v-for="status in detail_statuses" :key="status.id" :value="Number(status.id)">
-                                                                    {{ status.detail_status_name }}
-                                                                </option>
-                                                            </select>
-                                                        <div v-if="errors.order_status" class="text-red-500">{{ errors.order_status }}</div>
-                                                        </div>
-                                                    </td>
-
                                                 </tr>
                                             </tbody>
                                         </table>

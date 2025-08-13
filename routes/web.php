@@ -7,14 +7,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\WorkController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\SalesController;
 use App\Http\Controllers\NyukinController;
 use Inertia\Inertia;
 
@@ -31,6 +29,11 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders/create2', [OrderController::class, 'create2'])->name('orders.create2');
+    Route::get('/order_detail/{id}', [OrderController::class, 'detail_edit'])->name('order_detail.edit');
+    Route::put('/order_detail/{id}', [OrderController::class, 'detail_update'])->name('order_detail.update');
+    Route::get('/order_confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+    Route::get('/seikyu_index', [OrderController::class, 'seikyu_index'])->name('seikyu.index');
+    Route::post('/seikyu', [OrderController::class, 'seikyu_store'])->name('seikyu.store');
     Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::get('/reports/{id}', [ReportController::class, 'index'])->name('reports.index2');
     Route::get('/reports/create/{id}', [ReportController::class, 'create'])->name('reports.create2');
@@ -50,7 +53,7 @@ Route::resource('users', UserController::class) ->middleware(['auth', 'verified'
 
 Route::resource('company', CompanyController::class) ->middleware(['auth', 'verified']);
 
-Route::resource('work', WorkController::class) ->middleware(['auth', 'verified']);
+
 
 // Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
 
@@ -69,7 +72,7 @@ Route::resource('comments', CommentController::class) ->middleware(['auth', 'ver
 
 Route::resource('orders', OrderController::class) ->middleware(['auth', 'verified']);
 
-Route::resource('sales', SalesController::class) ->middleware(['auth', 'verified']);
+
 
 Route::resource('nyukins', NyukinController::class) ->middleware(['auth', 'verified']);
 
