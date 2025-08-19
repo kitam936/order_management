@@ -20,13 +20,14 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->numberBetween(16,97), // Create a new user for each order
-            'car_id'  => fake()->numberBetween(5,92),
-            'shop_id'  => fake()->numberBetween(1101,1102),
-            'staff_id'  => fake()->numberBetween(9,11),
+            'id' => fake()->unique()->numberBetween(101, 200), // Unique ID for each order
+            'user_id' => 1001, // Create a new user for each order
+            'car_id'  => fake()->randomElement([1, 2]), // Generate car_id as either 1 or 7
+            'shop_id'  => 1101,
+            'staff_id'  => 2,
             'order_status' => 1,
             'order_info' => fake()->realText(50),
-            'pitin_date' => fake()->dateTimeBetween('-3 month', '+1 month'), // Specify date range
+            'pitin_date' => fake()->dateTimeBetween('-5 years', '+1 month'), // Specify date range
         ];
 
     }

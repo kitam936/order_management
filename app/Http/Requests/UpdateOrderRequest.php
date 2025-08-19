@@ -27,9 +27,9 @@ class UpdateOrderRequest extends FormRequest
             'car_id' => ['required','integer'],
             'items' => ['required','array'],
             'items.*.item_id' => ['required','integer'],
-            'items.*.pcs' => ['required','integer','min:0'],
-            'items.*.sales_price' => ['required','numeric','min:0'],
-            'items.*.work_fee' => ['required','numeric','min:0'],
+            'items.*.pcs' => ['required','integer'],
+            'items.*.sales_price' => ['required','numeric'],
+            'items.*.work_fee' => ['required','numeric'],
         ];
     }
 }

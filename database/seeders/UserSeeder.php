@@ -117,6 +117,19 @@ class UserSeeder extends Seeder
             'tel' => '03-4567-8901',
             'mailService' => 1
         ],
+        [
+            'id' => 1001,
+            'name' => 'Kitamura',
+            'kana' => 'キタムラ',
+            'email' => 'kitamura@test.com',
+            'password' => Hash::make('password123'),
+            'role_id' => 99,
+            'shop_id' => 1101,
+            'postcode' => '362-0806',
+            'address' => '埼玉県上尾市上町1-1-1',
+            'tel' => '048-4567-8901',
+            'mailService' => 1
+        ],
 
     ]);
     }

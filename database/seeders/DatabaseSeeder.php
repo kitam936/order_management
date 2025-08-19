@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\OrderDetail;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,13 +24,21 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PayMethodSeeder::class,
             MakesSeeder::class,
+            CarCategorySeeder::class,
+            CarSeeder::class,
+            ItemCategorySeeder::class,
+            ItemSeeder::class,
+            OrderStatusSeeder::class,
+            DetailStatusSeeder::class,
+            SeikyuStatusSeeder::class,
             // BrandSeeder::class,
             // UnitSeeder::class,
 
         ]);
         User::factory(300)->create();
 
-        // Order::factory(100)->create();
+        Order::factory(100)->create();
+        OrderDetail::factory(300)->create();
 
         // User::factory(300)->create([
         //     'name' => 'Test User',
