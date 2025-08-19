@@ -20,6 +20,15 @@
     const searchOrders = () => {
         Inertia.get(route('orders.index', { search: search.value, car_category_id: car_category_id.value, customer_id: customer_id.value }));
     }
+
+    const downloadCSV_all = () => {
+        Inertia.get(route('orders.csv_all'));
+    }
+
+    const downloadCSV = () => {
+        Inertia.get(route('orders.csv', { search: search.value, car_category_id: car_category_id.value, customer_id: customer_id.value }));
+    }
+
 </script>
 
 <template>
@@ -35,11 +44,13 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage />
                     <div class="p-6 text-gray-900">
+
                         <div class="ml-24 mb-8">
                             <Link as="button" :href="route('orders.create')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Order登録</Link>
                         </div>
 
-                        <div class="flex ml-12 mb-8">
+
+                        <div class="flex ml-12 mb-4">
                             <div class="p-2 relative mt-2">
                                 <select id="customer_id" name="customer_id" v-model="customer_id" class="h-8 w-32 rounded border border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out">
                                     <option value="" selected>User選択</option>
@@ -58,6 +69,25 @@
                                 <input class="h-8 w-80 rounded" type="text" name="search" v-model="search" placeholder="ワード検索/ 空欄で検索すれば全件表示">
                                 <button class="ml-2 bg-blue-300 text-white px-2 h-8 rounded" @click="searchOrders">検索</button>
                             </div>
+                        </div>
+
+                        <div class="flex ml-60 mb-4">
+                            <button
+                                type="button"
+                                @click="downloadCSV_all"
+                                class="w-40 h-8 flex mt-2 text-white bg-blue-500 py-2 pl-2 hover:bg-blue-600 rounded text-sm"
+                            >
+                                CSVダウンロードALL
+                            </button>
+
+
+                            <button
+                                type="button"
+                                @click="downloadCSV"
+                                class="w-40 h-8 flex ml-8 mt-2 text-white bg-blue-500 py-2 pl-2 hover:bg-blue-600 rounded text-sm"
+                            >
+                                CSVダウンロードSearch
+                            </button>
                         </div>
 
                         <div class="mx-auto w-full sm:px-4 lg:px-4 border">

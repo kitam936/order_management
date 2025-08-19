@@ -27,35 +27,19 @@
     const line = Array.from({ length: 20 }, (_, i) => `${i + 1}`);
 
     const itemList = ref(
-        Array.from({ length: 20 }, (_, index) => {
-            const detail = props.order_fs[index];
-            if (detail) {
-                const item = props.items.find(i => i.id === detail.item_id);
-                return {
-                    id: detail.item_id,
-                    name: item ? item.item_name : '',
-                    price: item ? item.item_price : 0,
-                    sales_price: detail.sales_price,
-                    pcs: detail.item_pcs,
-                    work_fee: detail.work_fee,
-                    detail_info: detail.detail_info || '',
-
-                };
-            } else {
-                return {
-                    id: null,
-                    name: '',
-                    price: 0,
-                    sales_price: 0,
-                    pcs: 0,
-                    work_fee: 0,
-                    detail_info: '',
-
-                };
-            }
-        })
-    );
-
+    props.order_fs.map(detail => {
+        const item = props.items.find(i => i.id === detail.item_id);
+        return {
+            id: detail.item_id,
+            name: item ? item.item_name : '',
+            price: item ? item.item_price : 0,
+            sales_price: detail.sales_price,
+            pcs: detail.item_pcs,
+            work_fee: detail.work_fee,
+            detail_info: detail.detail_info || '',
+        };
+    })
+);
     const totalPrice = computed(() => {
         return itemList.value.reduce((sum, item) => {
             return sum + (item.pcs * item.sales_price + (item.work_fee || 0));
@@ -117,6 +101,10 @@
 
         }
     }
+
+    const downloadPDF = () => {
+        window.open(route('orders.invoice', props.order_h.order_id), '_blank');
+    };
     </script>
 
     <template>
@@ -169,23 +157,30 @@
 
                                     <div class="ml-2 w-60 ">
                                         <label class="leading-7 text-sm text-gray-600">本体計</label>
-                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ totalPrice }}円</div>
+                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ totalPrice.toLocaleString() }}円</div>
                                     </div>
 
                                     <div class="ml-2 w-40 ">
                                         <label class="leading-7 text-sm text-gray-600">消費税</label>
-                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ totalPrice * 0.1}}円</div>
+                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ Math.floor(totalPrice * 0.1).toLocaleString()}}円</div>
                                     </div>
 
                                     <div class="ml-2 w-60 " >
                                         <label for="seikyu_kingaku" class="leading-7 text-sm text-gray-600">請求額</label>
-                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ Math.floor(totalPrice * 1.1) }}円</div>
+                                        <div class="w-full bg-gray-100 rounded border py-1 px-3 text-gray-700">{{ Math.floor(totalPrice * 1.1).toLocaleString() }}円</div>
                                     </div>
                                 </div>
-                                    <div class="p-2 w-1/2 mx-auto">
+                                    <div class="flex p-4 w-1/2 mx-auto">
+                                        <button
+                                        type="button"
+                                        @click="downloadPDF"
+                                        class="w-40 h-10 flex mx-auto mt-0 text-white bg-green-500 py-2 pl-10 hover:bg-green-600 rounded text-ml"
+                                        >
+                                            請求書発行
+                                        </button>
                                         <button type="submit"
-                                            class="flex mx-auto text-white bg-pink-500 py-2 px-8 hover:bg-pink-600 rounded text-lg">
-                                            確定
+                                            class="w-40 h-10 flex mx-auto text-white bg-pink-500 py-2 pl-12 hover:bg-pink-600 rounded text-ml">
+                                            請求確定
                                         </button>
                                     </div>
 
@@ -193,35 +188,41 @@
                                         <table class="bg-white table-auto w-full text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>id</th><th>品名</th><th>マスタ単価</th><th>販売単価</th><th>数量</th><th>工賃</th><th>小計</th><th>詳細</th>
+                                                    <th>id</th><th>品名</th>
+                                                    <!-- <th>マスタ単価</th> -->
+                                                    <th>販売単価</th><th>数量</th>
+                                                    <th>部品計</th>
+                                                    <th>工賃</th><th>小計</th><th>詳細</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(item, index) in itemList" :key="index">
                                                     <td>{{ index + 1 }}</td>
                                                     <td>
-                                                        <select v-model="item.id" @change="onItemChange(index)" class="w-80 rounded">
+                                                        <select v-model="item.id" @change="onItemChange(index)" class="w-80 rounded" disabled>
                                                             <option value="">商品選択</option>
                                                             <option v-for="itm in props.items" :key="itm.id" :value="itm.id">
                                                                 {{ itm.id }}--{{ itm.item_name }}--{{ itm.item_category_name }}
                                                             </option>
                                                         </select>
                                                     </td>
-                                                    <td>{{ item.price }}</td>
-                                                    <td><input type="number" v-model.number="item.sales_price" class="w-24 text-right rounded" /></td>
+                                                    <!-- <td>{{ item.price }}</td> -->
+                                                    <td><input type="number" v-model.number="item.sales_price" class="w-24 text-right rounded"  style="font-variant-numeric:tabular-nums" readonly /></td>
                                                     <td>
-                                                        <select v-model.number="item.pcs" class="w-16 rounded">
+                                                        <select v-model.number="item.pcs" class="w-16 rounded" disabled>
                                                             <option v-for="q in pcs" :key="q" :value="q">{{ q }}</option>
                                                         </select>
                                                     </td>
-                                                    <td><input type="number" v-model.number="item.work_fee" class="w-24 text-right rounded" /></td>
-                                                    <td>{{ item.pcs * item.sales_price + item.work_fee }}</td>
-                                                    <td><input type="text" v-model="item.detail_info" class="w-full rounded" placeholder="詳細情報" /></td>
+                                                    <td>{{ (item.pcs * item.sales_price).toLocaleString() }}</td>
+                                                    <td><input type="number" v-model.number="item.work_fee" class="w-24 text-right rounded"  style="font-variant-numeric:tabular-nums" readonly /></td>
+                                                    <td>{{ (item.pcs * item.sales_price + item.work_fee).toLocaleString() }}</td>
+                                                    <td><input type="text" v-model="item.detail_info" class="w-full rounded" placeholder="詳細情報" readonly /></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </form>
+
                             </section>
                         </div>
                     </div>

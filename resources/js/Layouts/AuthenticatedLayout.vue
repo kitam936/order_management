@@ -66,6 +66,13 @@ const showingNavigationDropdown = ref(false);
                                     請求管理
                                 </NavLink>
 
+                                <NavLink
+                                :href="route('csv.import.index')"
+                                :active="route().current('csv.import.index')"
+                                >
+                                    Data管理
+                                </NavLink>
+
                             </div>
                         </div>
 

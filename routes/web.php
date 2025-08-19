@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NyukinController;
+use App\Http\Controllers\CsvImportController;
 use Inertia\Inertia;
 
 
@@ -34,6 +35,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/order_confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
     Route::get('/seikyu_index', [OrderController::class, 'seikyu_index'])->name('seikyu.index');
     Route::post('/seikyu', [OrderController::class, 'seikyu_store'])->name('seikyu.store');
+    Route::get('/seikyu/{id}', [OrderController::class, 'seikyu_show'])->name('seikyu.show');
+    Route::get('/pay_create/{id}', [OrderController::class, 'pay_create'])->name('pay.create');
+    Route::post('/pay_store', [OrderController::class, 'pay_store'])->name('pay.store');
+    Route::get('/pay/{id}', [OrderController::class, 'pay_show'])->name('pay.show');
+    Route::get('/pay_edit/{id}', [OrderController::class, 'pay_edit'])->name('pay.edit');
+    Route::put('/pay_update/{id}', [OrderController::class, 'pay_update'])->name('pay.update');
+    Route::delete('/pay_delete/{id}', [OrderController::class, 'pay_destroy'])->name('pay.destroy');
     Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::get('/reports/{id}', [ReportController::class, 'index'])->name('reports.index2');
     Route::get('/reports/create/{id}', [ReportController::class, 'create'])->name('reports.create2');
@@ -43,6 +51,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('del_image2', [ReportController::class, 'del_image2'])->name('reports.del_image2');
     Route::delete('del_image3', [ReportController::class, 'del_image3'])->name('reports.del_image3');
     Route::delete('del_image4', [ReportController::class, 'del_image4'])->name('reports.del_image4');
+    Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/order_csv_all', [OrderController::class, 'orderCSV_download_all'])->name('orders.csv_all');
+    Route::get('/order_csv', [OrderController::class, 'orderCSV_download'])->name('orders.csv');
+    Route::get('/csv-import', [CsvImportController::class, 'index'])->name('csv.import.index');
+    Route::post('/csv-import', [CsvImportController::class, 'store'])->name('csv.import.store');
+    Route::get('/csv-progress', [CsvImportController::class, 'progress'])->name('csv.import.progress');
 });
 
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);

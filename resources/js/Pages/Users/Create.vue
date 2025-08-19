@@ -19,8 +19,8 @@ const page = usePage();
 const form = useForm({
     name: page.props.old?.name ?? null,
     email: page.props.old?.email ?? null,
-    shop_id: page.props.old?.shop_id ?? null,
-    role_id: page.props.old?.role_id ?? null,
+    shop_id: page.props.old?.shop_id ?? "",
+    role_id: page.props.old?.role_id ?? "",
     user_info: page.props.old?.user_info ?? null,
     postcode: page.props.old?.postcode ?? null,
     address: page.props.old?.address ?? null,
@@ -77,7 +77,7 @@ const storeUser = () => {
                                         <div class="p-0 relative">
                                             <label for="shop_id" class="leading-7 text-sm text-gray-600">ShopID</label>
                                             <select id="shop_id" name="shop_id" v-model="form.shop_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option value="" disabled>Shop選択</option>
+                                                <option value="" >Shop選択</option>
                                                 <option v-for="shop in shops" :key="shop.id" :value="shop.id">{{ shop.shop_name }}</option>
                                             </select>
                                             <div v-if="errors.shop_id" class="text-red-500">{{ errors.shop_id }}</div>
@@ -85,7 +85,7 @@ const storeUser = () => {
                                         <div class="p-0 ml-2 relative">
                                             <label for="role_id" class="leading-7 text-sm text-gray-600">RoleID</label>
                                             <select id="role_id" name="role_id" v-model="form.role_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option value="" disabled>Role選択</option>
+                                                <option value="" >Role選択</option>
                                                 <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.role_name }}</option>
                                             </select>
                                             <div v-if="errors.role_id" class="text-red-500">{{ errors.role_id }}</div>

@@ -41,8 +41,8 @@
 
     const form = useForm({
         pitin_date:null,
-        shop_id: null,
-        car_id: null,
+        shop_id: "",
+        car_id: "",
         order_info: '',
         items:[],
     })
@@ -143,7 +143,7 @@
                                     <div class="p-0 ml-2 relative">
                                         <label for="shop_id" class="leading-7 text-sm text-gray-600">Shop</label>
                                         <select id="shop_id" name="shop_id" v-model="form.shop_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                            <option value="" disabled selected>Shop選択</option> <!-- 修正: disabledを追加 -->
+                                            <option value="" >Shop選択</option> <!-- 修正: disabledを追加 -->
                                             <option v-for="shop in shops" :key="shop.shop_id" :value="shop.shop_id">{{ shop.shop_name }}</option>
                                         </select>
                                         <div v-if="errors.shop_id" class="text-red-500">{{ errors.shop_id }}</div>

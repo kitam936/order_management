@@ -29,7 +29,7 @@ const deleteOrder = (id) => {
                 <Link as="button" :href="route('orders.edit',{order:order_h.order_id})" class="w-36 flex mx-auto text-white h-10 bg-indigo-500 border-0 py-2 px-12 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</Link>
             </div>
             <div v-if="order_h.order_status == 9" class="h-10 p-2 w-full">
-                <Link as="button" :href="route('order.confirm',{id:order_h.order_id})" class="w-36 flex mx-auto text-white bg-green-500 border-0 h-10 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">売上確定</Link>
+                <Link as="button" :href="route('order.confirm',{id:order_h.order_id})" class="w-36 flex mx-auto text-white bg-green-500 border-0 h-10 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">請求処理</Link>
             </div>
             <div class="h-10 p-2 w-full">
                 <button class="w-36 flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded h-10 text-lg" @click="deleteOrder(order_h.order_id)" >削除する</button>

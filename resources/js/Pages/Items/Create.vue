@@ -16,8 +16,8 @@
     const page = usePage();
 
     const form = useForm({
-        item_category_id: page.props.old?.item_category_id ?? null,
-        car_category_id: page.props.old?.car_category_id ?? null,
+        item_category_id: page.props.old?.item_category_id ?? "",
+        car_category_id: page.props.old?.car_category_id ?? "",
         prod_code: page.props.old?.prod_code ?? null,
         item_name: page.props.old?.item_name ?? null,
         item_info: page.props.old?.item_info ?? null,
