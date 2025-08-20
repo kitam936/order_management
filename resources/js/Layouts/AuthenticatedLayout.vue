@@ -73,6 +73,13 @@ const showingNavigationDropdown = ref(false);
                                     Data管理
                                 </NavLink>
 
+                                <NavLink
+                                :href="route('analysis')"
+                                :active="route().current('analysis')"
+                                >
+                                    Data分析
+                                </NavLink>
+
                             </div>
                         </div>
 
@@ -207,6 +214,21 @@ const showingNavigationDropdown = ref(false);
                         >
                             請求管理
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('csv.import.index')"
+                            :active="route().current('csv.import.index')"
+                        >
+                            Data管理
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('api.analysis')"
+                            :active="route().current('api.analysis')"
+                        >
+                            Data分析
+                        </ResponsiveNavLink>
+
 
                     </div>
 

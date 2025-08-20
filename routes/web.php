@@ -15,6 +15,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NyukinController;
 use App\Http\Controllers\CsvImportController;
+
+use App\Http\Controllers\AnalysisController;
 use Inertia\Inertia;
 
 
@@ -57,6 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/csv-import', [CsvImportController::class, 'index'])->name('csv.import.index');
     Route::post('/csv-import', [CsvImportController::class, 'store'])->name('csv.import.store');
     Route::get('/csv-progress', [CsvImportController::class, 'progress'])->name('csv.import.progress');
+
+    Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis');
+    Route::get('analysis/test', [AnalysisController::class, 'test'])->name('analysis.test');
 });
 
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
