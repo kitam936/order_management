@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App_models\OrderDetail;
 use App\Models\User;
 
+
 class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
@@ -23,6 +24,8 @@ class Order extends Model
         'pitin_date',
     ];
 
+
+
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
@@ -32,4 +35,10 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+
+
+
+
 }
