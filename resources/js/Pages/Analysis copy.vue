@@ -5,7 +5,6 @@
     import { getToday } from '@/common';
     import Chart from '@/Components/Chart.vue';
     import axios from 'axios';
-    import ResultTable from '@/Components/ResultTable.vue';
 
     const form = reactive({
         startDate: null,
@@ -76,7 +75,6 @@
                                     <label><input type="radio" value="perMonth" v-model="form.type" /> 月別</label>
                                     <label><input type="radio" value="perWeek" v-model="form.type" /> 週別</label>
                                     <label><input type="radio" value="perDay" v-model="form.type" /> 日別</label>
-                                    <label><input type="radio" value="decile" v-model="form.type" />デシル分析</label>
                                 </div><br>
 
 
@@ -119,17 +117,27 @@
                             </form>
 
                             <Chart v-show="data.data.length" :data="data" />
-                            <ResultTable
-                            v-if="data.data && data.data.length > 0"
-                            :data="data"
-                            :type="form.type"
-                        />
-
                         </div>
                     </div>
                 </div>
             </div>
 
-
+            <!-- 集計結果テーブル -->
+            <div v-show="data.data.length" class="w-1/2 mx-auto sm:px-4 lg:px-4 border">
+                <table class="bg-white table-auto w-full text-center whitespace-no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">年月日</th>
+                            <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in data.data" :key="item.date">
+                            <td class="border-b-2 border-gray-200 text-center" style="font-variant-numeric:tabular-nums">{{ item.date }}</td>
+                            <td class="border-b-2 border-gray-200 text-right pr-10" style="font-variant-numeric:tabular-nums">{{ Number(item.total ?? 0).toLocaleString() }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </AuthenticatedLayout>
     </template>

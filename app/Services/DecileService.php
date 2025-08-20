@@ -1,60 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\Order;
-use App\Models\OrderSubtotal;
-use App\Models\Scopes\Subtotal;
+namespace App\Services;
 use Illuminate\Support\Facades\DB;
-use App\Services\DecileService;
 
-
-class AnalysisController extends Controller
+class DecileService
 {
-    public function index()
+
+    public static function decile($subQuery)
     {
-        $start_date = '2025-05-01';
-        $end_date = '2025-8-31';
-        $subQuery = OrderSubtotal::betweenDate($start_date, $end_date)
-            ->groupBy('id')
-            ->selectRaw('id,sum(subtotal) as total,
-            customer_name,
-            item_id,
-            prod_code,
-            item_name,
-            item_price,
-            item_pcs,
-            work_fee,
-            subtotal,
-            DATE_FORMAT(pitin_date,"%Y%m%d") as pitin_date,
-            created_at');
-
-        $data = DB::table($subQuery)
-            ->groupBy('pitin_date')
-            ->selectRaw('pitin_date, sum(total) as total')
-            ->get();
-
-            // dd($data);
-
-
-            // dd( $period);
-        return Inertia::render('Analysis', [
-            'title' => '分析',
-            'description' => '分析ページの説明',
-            'data' => $data,
-        ]);
-    }
-
-    public function test(Request $request)
-    {
-        $startDate = '2018-05-01';
-        $endDate = '2025-8-31';
-
         //1 Idで集計
-        $subQuery = OrderSubtotal::betweenDate($startDate, $endDate)
-            ->groupBy('id', 'user_id', 'customer_name')
+        $subQuery =$subQuery->groupBy('id', 'user_id', 'customer_name')
             ->selectRaw('id,
                 user_id as customer_id,
                 customer_name,
@@ -133,6 +88,11 @@ class AnalysisController extends Controller
         $data = DB::table($subQuery)
             ->selectRaw('decile, totalPerGroup, avg, round(totalPerGroup / @total * 100, 2) as ratio')
             ->get();
-        dd($data);
+
+        $labels = $data->pluck('decile');
+        $totals = $data->pluck('totalPerGroup');
+
+        return [$data,$labels,$totals];
+
     }
 }
