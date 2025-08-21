@@ -15,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NyukinController;
 use App\Http\Controllers\CsvImportController;
+use App\Http\Controllers\MenuController;
 
 use App\Http\Controllers\AnalysisController;
 use Inertia\Inertia;
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis');
     Route::get('analysis/test', [AnalysisController::class, 'test'])->name('analysis.test');
+    Route::get('menu', [MenuController::class, 'menu'])->name('menu');
 });
 
 Route::resource('roles', RoleController::class) ->middleware(['auth', 'verified']);
@@ -109,5 +111,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 require __DIR__.'/auth.php';

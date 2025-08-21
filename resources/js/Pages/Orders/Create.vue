@@ -108,6 +108,11 @@
         }
     }
 
+    // 戻るボタンの処理
+    const goBack = () => {
+        window.history.back();
+    };
+
 </script>
 
 
@@ -118,13 +123,22 @@
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Order登録</h2>
+
+            <div class="mt-4">
+                <button
+                    type="button"
+                    @click="goBack"
+                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                    戻る
+                </button>
+            </div>
         </template>
 
-        <div class="py-4">
+        <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
+                    <div class="p-2 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 
                         <form @submit.prevent="storeOrder" >
@@ -183,12 +197,14 @@
                                 </div>
                             </div>
 
-                            <div class="p-2 w-1/2 mx-auto">
+                            <div class="flex mx-auto">
+                            <div class="mx-auto">
                                 <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"> 登録</button>
                             </div>
+                            <!-- 戻るボタン -->
 
-
-                            <div class=" mt-8 p-2 mx-auto w-full sm:px-4 lg:px-0 rounded border ">
+                            </div>
+                            <div class=" mt-4 p-2 mx-auto w-full sm:px-4 lg:px-0 rounded border ">
 
                                 <table class="bg-white table-auto w-full text-center whitespace-no-wrap">
                                     <thead>

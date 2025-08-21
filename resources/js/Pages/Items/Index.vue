@@ -21,6 +21,11 @@
         Inertia.get(route('items.index', { search: search.value ,item_category_id: item_category_id.value ,car_category_id: car_category_id.value}))
     }
 
+    // 戻るボタンの処理
+    const goBack = () => {
+        window.history.back();
+    };
+
 </script>
 
 <template>
@@ -30,6 +35,14 @@
         <template #header>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">商品一覧</h2>
+            <div class="mt-4">
+                <button
+                    type="button"
+                    @click="goBack"
+                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                    戻る
+                </button>
+            </div>
         </template>
 
         <div class="py-12">
@@ -38,8 +51,15 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage/>
                     <div class="p-6 text-gray-900">
+                        <div class="flex">
                         <div class="ml-24 mb-8">
                             <Link as="button" :href="route('items.create')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">商品登録</Link>
+                        </div>
+                        <div class="ml-24 mb-8">
+                            <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                        </div>
+
+
                         </div>
 
                         <div class="flex ml-12 mb-8">

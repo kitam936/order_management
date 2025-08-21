@@ -36,8 +36,13 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage/>
                     <div class="p-6 text-gray-900">
+                        <div class="flex">
                         <div class="ml-12 mb-8">
                             <Link as="button" :href="route('users.create')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">User登録</Link>
+                        </div>
+                        <div class="ml-24 mb-8">
+                            <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                        </div>
                         </div>
                         <div class="flex ml-12 mb-8">
                             <div class="p-2 relative mt-2 ">

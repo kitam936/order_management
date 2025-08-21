@@ -3,7 +3,7 @@
     import { Head, useForm } from '@inertiajs/vue3'
     import { ref, onMounted, onUnmounted } from 'vue'
     import FlashMessage from '@/Components/FlashMessage.vue'
-
+    import { Link } from '@inertiajs/vue3'
 
     const form = useForm({ file: null })
     const progress = ref(0)
@@ -50,6 +50,10 @@
             <div class="p-4">
                 <h1 class="text-xl font-bold mb-4">CSVインポート</h1>
 
+                <div class="ml-24 mb-8">
+                    <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                </div>
+
                 <form @submit.prevent="submit" enctype="multipart/form-data">
                     <input type="file" @change="e => form.file = e.target.files[0]" class="mb-4" />
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
@@ -57,7 +61,7 @@
                     </button>
                 </form>
 
-                <div class="mt-6">
+                <!-- <div class="mt-6">
                     <div class="w-full bg-gray-200 rounded h-6 overflow-hidden">
                         <div class="bg-green-500 h-6" :style="{ width: progress + '%' }"></div>
                     </div>
@@ -66,7 +70,7 @@
 
                 <div v-if="$page.props.flash.success" class="mt-4 text-green-600">
                     {{ $page.props.flash.success }}
-                </div>
+                </div> -->
             </div>
         </AuthenticatedLayout>
     </template>
