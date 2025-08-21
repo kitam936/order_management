@@ -39,18 +39,13 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+
                                 <NavLink
-                                    :href="route('items.index')"
-                                    :active="route().current('items.index')"
-                                >
-                                    商品管理
-                                </NavLink>
-                                <NavLink
-                                :href="route('users.index')"
-                                :active="route().current('users.index')"
-                                >
-                                    User管理
-                                </NavLink>
+                                :href="route('menu')"
+                                :active="route().current('menu')"
+                            >
+                                Menu
+                            </NavLink>
 
                                 <NavLink
                                 :href="route('orders.index')"
@@ -66,12 +61,6 @@ const showingNavigationDropdown = ref(false);
                                     請求管理
                                 </NavLink>
 
-                                <NavLink
-                                :href="route('csv.import.index')"
-                                :active="route().current('csv.import.index')"
-                                >
-                                    Data管理
-                                </NavLink>
 
                                 <NavLink
                                 :href="route('analysis')"
@@ -79,6 +68,29 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Data分析
                                 </NavLink>
+
+                                <NavLink
+                                :href="route('items.index')"
+                                :active="route().current('items.index')"
+                                >
+                                    商品管理
+                                </NavLink>
+
+
+                                <NavLink
+                                :href="route('users.index')"
+                                :active="route().current('users.index')"
+                                >
+                                    User管理
+                                </NavLink>
+
+                                <NavLink
+                                :href="route('csv.import.index')"
+                                :active="route().current('csv.import.index')"
+                                >
+                                    CSVインポート
+                                </NavLink>
+
 
                             </div>
                         </div>
@@ -112,11 +124,11 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink
+                                        <!-- <DropdownLink
                                             :href="route('profile.edit')"
                                         >
                                             Profile
-                                        </DropdownLink>
+                                        </DropdownLink> -->
                                         <DropdownLink
                                             :href="route('logout')"
                                             method="post"
@@ -188,17 +200,10 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('items.index')"
-                            :active="route().current('items.index')"
+                        :href="route('menu')"
+                        :active="route().current('menu')"
                         >
-                            商品管理
-                        </ResponsiveNavLink>
-
-                        <ResponsiveNavLink
-                            :href="route('users.index')"
-                            :active="route().current('users.index')"
-                        >
-                            User管理
+                            Menu
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
@@ -216,18 +221,34 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                            :href="route('csv.import.index')"
-                            :active="route().current('csv.import.index')"
-                        >
-                            Data管理
-                        </ResponsiveNavLink>
-
-                        <ResponsiveNavLink
                             :href="route('api.analysis')"
                             :active="route().current('api.analysis')"
                         >
-                            Data分析
+                            分析
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('items.index')"
+                            :active="route().current('items.index')"
+                        >
+                            商品管理
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
+                        >
+                            User管理
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('csv.import.index')"
+                            :active="route().current('csv.import.index')"
+                        >
+                            CSVインポート
+                        </ResponsiveNavLink>
+
+
 
 
                     </div>

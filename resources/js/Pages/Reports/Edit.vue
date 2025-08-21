@@ -93,6 +93,10 @@ const del_image4 = id => {
     })
 }
 
+ // 戻るボタンの処理
+ const goBack = () => {
+    window.history.back();
+};
 
 </script>
 
@@ -102,6 +106,14 @@ const del_image4 = id => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Report編集</h2>
+            <div class="mt-4">
+                <button
+                    type="button"
+                    @click="goBack"
+                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                    戻る
+                </button>
+            </div>
         </template>
 
         <div class="py-12">

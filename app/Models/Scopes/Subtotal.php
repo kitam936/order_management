@@ -17,7 +17,10 @@ class Subtotal implements Scope
                 ,(order_details.item_price * order_details.item_pcs + order_details.work_fee) as subtotal
                 ,users.id as user_id
                 ,users.name as customer_name
+                ,staff_users.name as staff_name
+                ,orders.staff_id
                 ,car_categories.id as car_category_id
+                ,car_categories.car_name as car_name
                 ,order_details.item_id
                 ,items.prod_code
                 ,items.item_name
@@ -32,9 +35,9 @@ class Subtotal implements Scope
                 left join order_details on orders.id = order_details.order_id
                 left join items on order_details.item_id = items.id
                 left join users on orders.user_id = users.id
+                left join users as staff_users on orders.staff_id = staff_users.id
                 left join cars on orders.car_id = cars.id
                 left join car_categories on cars.car_category_id = car_categories.id
-
                 ';
         $builder->fromsub($sql,'order_subtotal');
     }

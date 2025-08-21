@@ -36,8 +36,12 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">請求一覧</h2>
             <FlashMessage/>
-            <div class="flex p-2 w-1/2 mx-auto">
 
+
+                <div class="ml-12 mb-2 mt-4">
+                    <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                </div>
+                <div class="flex p-2 w-1/2 mx-auto">
                 <div class="">
                     <label for="seikyu_total" class="leading-7 text-sm text-gray-600">総請求額</label>
                     <div class="h-8 text-sm w-60 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ seikyu_total.total_seikyu_kingaku }}円</div>
@@ -51,7 +55,7 @@
             </div>
         </template>
 
-        <div class="flex ml-12 mb-8">
+        <div class="flex ml-12 mb-4">
             <div class="p-2 relative mt-2">
                 <select id="customer_id" name="customer_id" v-model="customer_id" class="h-8 w-32 rounded border border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out">
                     <option value="" selected>User選択</option>

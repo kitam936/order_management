@@ -6,6 +6,7 @@
     import Chart from '@/Components/Chart.vue';
     import axios from 'axios';
     import ResultTable from '@/Components/ResultTable.vue';
+    import { Link } from '@inertiajs/vue3';
 
     const form = reactive({
         startDate: null,
@@ -63,9 +64,13 @@
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     データ分析
                 </h2>
+
+                <div class="ml-12 mb-2 mt-4">
+                    <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                </div>
             </template>
 
-            <div class="py-12">
+            <div class="py-2">
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
@@ -76,7 +81,9 @@
                                     <label><input type="radio" value="perMonth" v-model="form.type" /> 月別</label>
                                     <label><input type="radio" value="perWeek" v-model="form.type" /> 週別</label>
                                     <label><input type="radio" value="perDay" v-model="form.type" /> 日別</label>
-                                    <label><input type="radio" value="decile" v-model="form.type" />デシル分析</label>
+                                    <label class="ml-8"><input type="radio" value="Staff" v-model="form.type" /> STAFF別</label>
+                                    <label class="ml-8"><input type="radio" value="CarCategory" v-model="form.type" /> 車種別</label>
+                                    <label class="ml-8"><input type="radio" value="decile" v-model="form.type" />デシル分析</label>
                                 </div><br>
 
 
@@ -89,7 +96,7 @@
                                     <input v-model="form.endDate" type="date" class="h-8 w-40 rounded border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out" />
                                     </div>
                                     <div class="flex items-center ml-4">
-                                    <label class="ml-3 mr-2">絞り込み:</label>
+                                    <label class="ml-3 mr-2">期間検索から絞り込み:</label>
                                     <!-- User選択 -->
                                     <div class="flex">
                                     <div class="relative ">
@@ -116,6 +123,7 @@
                                 <br>
 
                                 <button type="submit" class="w-32 ml-2 px-4 py-2 bg-blue-500 text-white rounded">分析</button>
+
                             </form>
 
                             <Chart v-show="data.data.length" :data="data" />

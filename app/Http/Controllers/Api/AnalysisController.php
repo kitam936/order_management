@@ -110,6 +110,37 @@ class AnalysisController extends Controller
         // 日付範囲指定
         $subQuery = OrderSubtotal::betweenDate($request->startDate, $request->endDate);
 
+        if ($request->type === 'CarCategory') {
+            $subQuery->groupBy('car_category_id','car_name')
+                ->selectRaw('car_name, sum(subtotal) as sub_total')
+                ->groupBy('car_name');
+
+            $data = DB::table($subQuery)
+            ->groupBy('car_name')
+            ->selectRaw('car_name, sum(sub_total) as total')
+            ->orderBy('total', 'desc')
+            ->get();
+
+            $labels = $data->pluck('car_name');
+            $totals = $data->pluck('total');
+        }
+
+        if ($request->type === 'Staff') {
+            $subQuery
+                ->groupBy('staff_name')
+                ->selectRaw('staff_name, sum(subtotal) as sub_total')
+                ->groupBy('staff_name');
+
+            $data = DB::table($subQuery)
+            ->groupBy('staff_name')
+            ->selectRaw('staff_name, sum(sub_total) as total')
+            ->orderBy('total', 'desc')
+            ->get();
+
+            $labels = $data->pluck('staff_name');
+            $totals = $data->pluck('total');
+        }
+
         // ★ ユーザー絞り込み
         if (!empty($request->customer_id)) {
             $subQuery->where('user_id', $request->customer_id);
