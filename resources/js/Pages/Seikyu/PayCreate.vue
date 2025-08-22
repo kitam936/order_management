@@ -62,19 +62,19 @@
             </div>
         </template>
 
-        <div class="py-6">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-3 text-gray-900">
+                    <div class="p-2 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 
                             <form @submit.prevent="storePay" >
-                            <div class="container px-5 py-8 mx-auto">
+                            <div class="container px-5 py-2 mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
-                                    <div class="flex p-2 relative">
+                                    <div class="flex ml-2 relative">
                                         <div class="w-60">
                                             <label for="seikyu_id" class="leading-7 text-sm text-gray-600">請求ID</label>
                                             <input readonly ="seikyu_id" name="seikyu_id" v-model="form.seikyu_id" class="w-60 h-8 rounded ">
@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex p-2 relative">
+                                    <div class="flex ml-2 relative">
                                         <div class="w-60">
                                             <label for="user_id" class="leading-7 text-sm text-gray-600">User_ID</label>
                                             <input readonly ="user_id" name="user_id" v-model="form.user_id" class="w-60 h-8 rounded ">
@@ -107,7 +107,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="flex p-2 w-full">
+                                    <div class="flex ml-2 w-full">
                                     <div class="relative">
                                         <label for="seikyu_kingaku" class="leading-7 text-sm text-gray-600">請求額</label>
                                         <input type="number" id="seikyu_kingaku" name="seikyu_kingaku" v-model="form.seikyu_kingaku" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -119,7 +119,7 @@
                                         <div v-if="errors.paid_kingaku" class="text-red-500">{{ errors.paid_kingaku }}</div>
                                     </div>
                                     </div>
-                                    <div class="w-60">
+                                    <div class="mt-2 w-60">
                                         <div class="p-0 ml-2 relative">
                                             <label for="pay_method" class="leading-7 text-sm text-gray-600">PayMethod</label>
                                             <select id="pay_method" name="pay_method" v-model="form.pay_method" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -131,8 +131,8 @@
                                     </div>
 
 
-                                    <div class="p-2 w-full">
-                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"> 登録</button>
+                                    <div class="mt-4 w-full">
+                                        <button class="w-32 h-8 flex mx-auto text-white bg-pink-500 border-0 py-2 pl-12 focus:outline-none hover:bg-pink-600 rounded text-sm"> 登録</button>
                                     </div>
 
                                 </div>

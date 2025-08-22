@@ -28,14 +28,19 @@
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">作業詳細/Report一覧</h2>
 
-            <div class="mt-4">
-                <button
-                    type="button"
-                    @click="goBack"
-                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
-                    戻る
-                </button>
-            </div>
+            <div class="flex mt-4">
+                <div class="">
+                    <button
+                        type="button"
+                        @click="goBack"
+                        class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                        戻る
+                    </button>
+                </div>
+                <div class="ml-24 mb-0">
+                    <Link as="button" :href="route('orders.index')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Order一覧</Link>
+                </div>
+                </div>
         </template>
 
         <div class="py-6">
@@ -96,7 +101,7 @@
                                     <!-- <td class="border-b-2 boder-gray-200">{{ report.report_id  }} </td> -->
                                     <td class="border-b-2 boder-gray-200">{{ report.staff_name  }} </td>
                                     <td class="border-b-2 boder-gray-200">{{ report.title  }} </td>
-                                    <td class="w-3/12 border-b-2 boder-gray-200">{{ report.report }} </td>
+                                    <td class="w-3/12 border-b-2 boder-gray-200">{{ report.report.substring(0, 20) }} </td>
                                     <td class="w-3/12 border-b-2 boder-gray-200">{{ report.comment_cnt }} </td>
 
                                 </tr>

@@ -27,6 +27,14 @@
         });
     }
 
+    const resetFilters = () => {
+        search.value = '';
+        customer_id.value = '';
+        car_category_id.value = '';
+        seikyu_status.value = '';
+        Inertia.get(route('seikyu.index'), { preserveState: true, preserveScroll: true });
+    }
+
 </script>
 
 <template>
@@ -38,8 +46,8 @@
             <FlashMessage/>
 
 
-                <div class="ml-12 mb-2 mt-4">
-                    <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                <div class="ml-15 mb-2 mt-4">
+                    <Link as="button" :href="route('menu')" class="ml-12 w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
                 </div>
                 <div class="flex p-2 w-1/2 mx-auto">
                 <div class="">
@@ -55,7 +63,7 @@
             </div>
         </template>
 
-        <div class="flex ml-12 mb-4">
+        <div class="flex ml-15 mb-4">
             <div class="p-2 relative mt-2">
                 <select id="customer_id" name="customer_id" v-model="customer_id" class="h-8 w-32 rounded border border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out">
                     <option value="" selected>User選択</option>
@@ -78,8 +86,9 @@
             </div>
 
             <div class="h-8 mr-8 mt-4">
-                <input class="h-8 w-80 rounded" type="text" name="search" v-model="search" placeholder="ワード検索/ 空欄で検索すれば全件表示">
+                <input class="h-8 w-80 rounded" type="text" name="search" v-model="search" placeholder="ワード検索">
                 <button class="ml-2 bg-blue-300 text-white px-2 h-8 rounded" @click="searchOrders">検索</button>
+                <button class="ml-2 bg-gray-300 text-white px-2 h-8 rounded" @click="resetFilters">リセット</button>
             </div>
         </div>
 
@@ -89,14 +98,14 @@
             <table class="bg-white table-auto w-full text-center whitespace-no-wrap">
                 <thead>
                     <tr>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Id(詳細)</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">User</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">車種</th>
-                        <th class="w-2/12 md:3/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">請求日</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">請求額</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">入金額</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Status</th>
-                        <th class="w-2/12 md:1/13 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">登録</th>
+                        <th class="w-1/15 md:1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Id(詳細)</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">User</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">車種</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">請求日</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">請求額</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">入金額</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Status</th>
+                        <th class="w-2/15 md:2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">登録</th>
                     </tr>
                 </thead>
 

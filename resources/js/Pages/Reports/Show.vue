@@ -41,7 +41,7 @@
                 </div>
             </template>
 
-            <div class="py-6">
+            <div class="py-3">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <FlashMessage />
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -52,7 +52,7 @@
                                     <Link as="button" :href="route('comments.create2',{id:report.id})" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">コメント登録</Link>
                                 </div>
 
-                                <div class="container px-5 py-8 mx-auto">
+                                <div class="container px-5 py-2 mx-auto">
                                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                     <div class="flex flex-wrap -m-2">
                                         <div class="flex p-2 w-full">
@@ -68,14 +68,15 @@
                                             <div id="detail_id" name="detail_id" class="w-24 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ report.detail_id }}</div>
 
                                         </div>
-                                        </div>
-                                        <div class="p-2 relative">
+                                        <div class="ml-2 relative">
                                             <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
                                             <div id="title" name="title" class="w-60 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ report.title }}</div>
 
                                         </div>
+                                        </div>
 
-                                        <div class="p-2 w-full">
+
+                                        <div class="p-0 ml-2  w-full">
                                         <div class="relative">
                                             <label for="report" class="leading-7 text-sm text-gray-600">Report</label>
                                             <div id="report" name="report" v-html="nl2br(report.report)" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
@@ -117,15 +118,15 @@
 
                                             </div>
                                         </div>
-
+                                    <div class="mt-4 mb-2 flex">
 
                                         <div class="p-2 w-full">
-                                            <Link as="button" :href="route('reports.edit',{report:report.id})" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Report編集</Link>
+                                            <Link as="button" :href="route('reports.edit',{report:report.id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 py-2 pl-7 focus:outline-none hover:bg-green-600 rounded text-sm">Report編集</Link>
                                         </div>
                                         <div class="p-2 w-full">
-                                            <button class="flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" @click="deleteReport(report.id)" >削除する</button>
+                                            <button class="w-32 h-8 flex mx-auto text-white bg-red-500 border-0 py-2 pl-10 focus:outline-none hover:bg-red-600 rounded text-sm" @click="deleteReport(report.id)" >削除する</button>
                                         </div>
-
+                                    </div>
                                     </div>
                                     </div>
                                 </div>
@@ -157,7 +158,7 @@
                             </td>
                             <!-- <td class="border-b-2 boder-gray-200">{{ report.report_id  }} </td> -->
                             <td class="border-b-2 boder-gray-200">{{ comment.name  }} </td>
-                            <td class="w-3/12 border-b-2 boder-gray-200">{{ comment.comment }} </td>
+                            <td class="w-3/12 border-b-2 boder-gray-200">{{ comment.comment.substring(0, 20) }} </td>
 
                         </tr>
                     </tbody>

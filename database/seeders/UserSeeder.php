@@ -119,15 +119,15 @@ class UserSeeder extends Seeder
         ],
         [
             'id' => 1001,
-            'name' => 'Kitamura',
-            'kana' => 'キタムラ',
-            'email' => 'kitamura@test.com',
-            'password' => Hash::make('password123'),
+            'name' => 'Guest User',
+            'kana' => 'ゲストユーザー',
+            'email' => 'guest@ktm936.net',
+            'password' => Hash::make('guest123456'),
             'role_id' => 99,
             'shop_id' => 1101,
-            'postcode' => '362-0806',
-            'address' => '埼玉県上尾市上町1-1-1',
-            'tel' => '048-4567-8901',
+            'postcode' => '103-0007',
+            'address' => '東京都中央区日本橋1-1-1',
+            'tel' => '03-1234-5678',
             'mailService' => 1
         ],
 

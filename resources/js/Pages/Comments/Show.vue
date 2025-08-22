@@ -74,10 +74,10 @@ const goBack = () => {
 
 
                                     <div class="p-2 w-full">
-                                        <Link as="button" :href="route('comments.edit',{comment:comment.id})" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">コメント編集</Link>
+                                        <Link as="button" :href="route('comments.edit',{comment:comment.id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 py-2 pl-7 focus:outline-none hover:bg-green-600 rounded text-sm">コメント編集</Link>
                                     </div>
                                     <div class="p-2 w-full">
-                                        <button class="flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" @click="deleteComment(comment.id)" >削除する</button>
+                                        <button class="w-32 h-8 flex mx-auto text-white bg-red-500 border-0 py-2 pl-9 focus:outline-none hover:bg-red-600 rounded text-sm" @click="deleteComment(comment.id)" >削除する</button>
                                     </div>
 
                                 </div>

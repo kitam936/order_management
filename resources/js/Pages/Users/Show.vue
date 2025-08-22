@@ -27,30 +27,35 @@ const goBack = () => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">User詳細</h2>
-            <div class="mt-4">
-                <button
-                    type="button"
-                    @click="goBack"
-                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
-                    戻る
-                </button>
+            <div class="flex mt-4">
+                <div class="">
+                    <button
+                        type="button"
+                        @click="goBack"
+                        class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                        戻る
+                    </button>
+                </div>
+                <div class="ml-24 mb-0">
+                    <Link as="button" :href="route('users.index')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">User一覧</Link>
+                </div>
             </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
+                    <div class="p-2 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 
 
-                            <div class="container px-5 py-8 mx-auto">
+                            <div class="container px-5 py-2 mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
 
-                                    <div class="p-2 w-full">
+                                    <div class="ml-2 w-full">
                                         <div class="relative">
                                             <label for="id" class="leading-7 text-sm text-gray-600">ID</label>
                                             <div type="text" id="user_id" name="user_id"  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ user.id }}</div>
@@ -68,7 +73,7 @@ const goBack = () => {
 
                                         </div>
                                     </div>
-                                    <div class="flex p-2 w-full">
+                                    <div class="flex ml-2 w-full">
                                         <div class="p-0 relative">
                                             <label for="shop_id" class="w-32 leading-7 text-sm text-gray-600">属性</label>
                                             <!-- <select id="shop_id" name="shop_id"  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -87,7 +92,7 @@ const goBack = () => {
                                             <div type="role_id" id="role_id" name="role_id" class="w-40 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ user.role_name }}</div>
                                         </div>
                                     </div>
-                                    <div class="p-2 w-full">
+                                    <div class="ml-2 w-full">
                                     <div class="relative">
                                         <label for="user_info" class="leading-7 text-sm text-gray-600">詳細</label>
                                         <textarea id="user_info" name="user_info" :value="user.user_info" readonly class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
@@ -95,8 +100,8 @@ const goBack = () => {
                                     </div>
                                     </div>
 
-                                    <div class="p-2 w-full"></div>
-                                    <div class="p-2 w-full">
+                                    <div class="ml-2 w-full"></div>
+                                    <div class="ml-2 w-full">
                                         <div class="relative">
                                             <label for="postcode" class="leading-7 text-sm text-gray-600">郵便番号</label>
                                             <div type="text" id="postcode" name="postcode" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ user.postcode }}</div>
@@ -116,14 +121,14 @@ const goBack = () => {
                                 </div>
 
 
-
-                                    <div class="p-2 w-full">
-                                        <Link as="button" :href="route('users.edit',{user:user.id})" class="w-36 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-12 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</Link>
+                                <div class="flex mt-8">
+                                    <div class="ml-2 w-full">
+                                        <Link as="button" :href="route('users.edit',{user:user.id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 py-2 pl-12 focus:outline-none hover:bg-green-600 rounded text-sm">編集</Link>
                                     </div>
-                                    <div class="p-2 w-full">
-                                        <button class="w-36 flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" @click="deleteUser(user.id)" >削除する</button>
+                                    <div class="ml-2 w-full">
+                                        <button class="w-32 h-8 flex mx-auto text-white bg-red-500 border-0 py-2 pl-8 focus:outline-none hover:bg-red-600 rounded text-sm" @click="deleteUser(user.id)" >削除する</button>
                                     </div>
-
+                                </div>
 
                                 </div>
                             </div>
