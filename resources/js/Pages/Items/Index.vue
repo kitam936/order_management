@@ -21,6 +21,14 @@
         Inertia.get(route('items.index', { search: search.value ,item_category_id: item_category_id.value ,car_category_id: car_category_id.value}))
     }
 
+    // 検索条件をリセットする関数
+    const resetFilters = () => {
+        search.value = '';
+        item_category_id.value = '';
+        car_category_id.value = '';
+        Inertia.get(route('items.index'), { preserveState: true });
+    }
+
     // 戻るボタンの処理
     const goBack = () => {
         window.history.back();
@@ -35,34 +43,27 @@
         <template #header>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">商品一覧</h2>
-            <div class="mt-4">
-                <button
-                    type="button"
-                    @click="goBack"
-                    class="w-32 h-8 ml-24 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
-                    戻る
-                </button>
-            </div>
+            <div class="flex">
+                <div class="ml-24 mt-4">
+                    <Link as="button" :href="route('items.create')" class="w-32 h-8 bg-green-500 text-sm text-white ml-0 hover:bg-green-600 rounded">商品登録</Link>
+                </div>
+                <div class="ml-24 mt-4">
+                    <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
+                </div>
+
+
+                </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-4">
 
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage/>
                     <div class="p-6 text-gray-900">
-                        <div class="flex">
-                        <div class="ml-24 mb-8">
-                            <Link as="button" :href="route('items.create')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">商品登録</Link>
-                        </div>
-                        <div class="ml-24 mb-8">
-                            <Link as="button" :href="route('menu')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Menu</Link>
-                        </div>
 
 
-                        </div>
-
-                        <div class="flex ml-12 mb-8">
+                        <div class="flex ml-12 mb-4">
                             <div class="p-2 relative mt-2 ">
                                 <!-- <label for="role_id" class="leading-7 text-sm text-gray-600">Role</label> -->
                                 <select id="item_category_id" name="item_category_id" v-model="item_category_id" class="h-8 w-32 rounded border border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out">
@@ -81,9 +82,10 @@
 
                             <div class="h-8 mr-8 mt-4">
 
-                                <input class="h-8 w-80 rounded" type="text" name="search" v-model="search" placeholder="ワード検索/ 空欄で検索すれば全件表示">
+                                <input class="h-8 w-80 rounded" type="text" name="search" v-model="search" placeholder="ワード検索">
                                 <button class="ml-2 bg-blue-300 text-white px-2 h-8 rounded "
                                 @click="searchItems">検索</button>
+                                <button class="ml-2 bg-gray-300 text-white px-2 h-8 rounded" @click="resetFilters">リセット</button>
                             </div>
 
                         </div>

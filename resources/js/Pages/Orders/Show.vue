@@ -34,19 +34,22 @@ const goBack = () => {
                 <button
                     type="button"
                     @click="goBack"
-                    class="w-32 h-8 ml-2 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-ml">
+                    class="w-32 h-8 ml-2 text-gray-700 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-300 rounded text-sm">
                     戻る
                 </button>
             </div>
+            <div class="ml-4 mt-2">
+                <Link as="button" :href="route('orders.index')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Order一覧</Link>
+            </div>
             <div class="h-10 p-2 ml-2">
-                <Link as="button" :href="route('orders.edit',{order:order_h.order_id})" class="w-32 h-8 flex pl-12 pt-1 text-white h-10 bg-indigo-500 border-0 focus:outline-none hover:bg-indigo-600 rounded text-ml">編集</Link>
+                <Link as="button" :href="route('orders.edit',{order:order_h.order_id})" class="w-32 h-8 flex pl-12 pt-2 text-white h-10 bg-green-500 border-0 focus:outline-none hover:bg-green-600 rounded text-sm">編集</Link>
             </div>
             <div v-if="order_h.order_status == 9" class="h-10 p-2 w-full">
-                <Link as="button" :href="route('order.confirm',{id:order_h.order_id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 h-10 ocus:outline-none hover:bg-green-600 rounded text-ml">請求処理</Link>
+                <Link as="button" :href="route('order.confirm',{id:order_h.order_id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 h-10 ocus:outline-none hover:bg-green-600 rounded text-sm">請求処理</Link>
             </div>
 
             <div class="h-10 p-2 w-full">
-                <button class="w-32 h-8 ml-40 flex text-white bg-red-500 border-0 pt-1 pl-8 focus:outline-none hover:bg-red-600 rounded h-10 text-ml" @click="deleteOrder(order_h.order_id)" >削除する</button>
+                <button class="w-32 h-8 ml-40 flex text-white bg-red-500 border-0 pt-2 pl-8 focus:outline-none hover:bg-red-600 rounded h-10 text-sm" @click="deleteOrder(order_h.order_id)" >削除する</button>
             </div>
             </div>
         </template>
@@ -57,16 +60,16 @@ const goBack = () => {
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <FlashMessage/>
-                    <div class="p-2 text-gray-900">
+                    <div class="p-0 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 
-                            <div class="container px-5 py-8 mx-auto">
+                            <div class="container px-5 py-4 mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
 
-                                    <div class="p-2 w-full">
-                                        <div class="flex">
+                                    <div class="p-0 w-full">
+                                        <div class="ml-2 flex">
                                         <div class="relative">
                                             <label for="id" class="leading-7 text-sm text-gray-600">ID</label>
                                             <div type="text" id="order_id" name="order_id"  class="h-8 text-sm w-32 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ order_h.order_id }}</div>
@@ -81,14 +84,15 @@ const goBack = () => {
 
                                         </div>
                                         </div>
+
+                                    </div>
+                                    <div class="flex ml-2 w-full">
                                         <div class="relative">
                                             <label for="user_id" class="leading-7 text-sm text-gray-600">User</label>
                                             <div id="user_id" name="user_id" class="h-8 text-sm w-60 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ order_h.customer_name }}</div>
 
                                         </div>
-                                    </div>
-                                    <div class="flex ml-2 w-full">
-                                        <div class="p-0 relative">
+                                        <div class="p-0 ml-2 relative">
                                             <label for="shop_id" class="w-32 leading-7 text-sm text-gray-600">Shop</label>
                                             <div type="shop_id" id="shop_id" name="shop_id" class="h-8 text-sm w-32 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ order_h.shop_name }}</div>
 
@@ -106,7 +110,7 @@ const goBack = () => {
                                     </div>
                                     </div>
 
-                                    <div class="p-2 w-1/2 mx-auto">
+                                    <div class="p-0 w-1/2 mx-auto">
                                         <div class="">
                                             <label for="total" class="leading-7 text-sm text-gray-600">Total</label>
                                             <div class="h-8 text-sm w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ order_total }}円</div>
@@ -122,7 +126,7 @@ const goBack = () => {
                 </div>
             </div>
 
-            <div class=" mt-8 p-2 mx-auto w-full sm:px-4 lg:px-0 rounded border ">
+            <div class=" mt-2 p-2 mx-auto w-full sm:px-4 lg:px-0 rounded border ">
 
                 <table class="bg-white table-auto w-full text-center whitespace-no-wrap">
                     <thead>
@@ -152,7 +156,7 @@ const goBack = () => {
                             <td class="w-60">{{ order_f.item_pcs }}</td>
                             <td class="w-60">{{ order_f.work_fee }}</td>
                             <td class="w-60">{{ order_f.item_pcs * order_f.sales_price + order_f.work_fee }}</td>
-                            <td class="w-60">{{ order_f.detail_info }}</td>
+                            <td class="w-60">{{ order_f.detail_info.substring(0, 10) }}</td>
                             <td class="w-60">{{ order_f.report_cnt }}</td>
                             <td class="w-60">{{ order_f.detail_status_name }}</td>
                         </tr>

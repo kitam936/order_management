@@ -123,8 +123,8 @@
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Order登録</h2>
-
-            <div class="mt-4">
+            <div class="flex mt-4">
+            <div class="">
                 <button
                     type="button"
                     @click="goBack"
@@ -132,18 +132,22 @@
                     戻る
                 </button>
             </div>
+            <div class="ml-24 mb-0">
+                <Link as="button" :href="route('orders.index')" class="w-32 h-8 bg-indigo-500 text-sm text-white ml-0 hover:bg-indigo-600 rounded">Order一覧</Link>
+            </div>
+            </div>
         </template>
 
         <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-2 text-gray-900">
+                    <div class="p-0 text-gray-900">
                         <section class="text-gray-600 body-font relative">
 
                         <form @submit.prevent="storeOrder" >
 
-                            <div class="container px-5 py-8 mx-auto">
+                            <div class="container px-5 py-4 mx-auto">
                                 <div class="lg:w-1/2 md:w-full mx-auto">
                                 <div class="flex flex-wrap -m-2">
                                     <div class="flex">
@@ -199,7 +203,7 @@
 
                             <div class="flex mx-auto">
                             <div class="mx-auto">
-                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"> 登録</button>
+                                <button class="w-32 h-8 flex mx-auto text-white bg-pink-500 border-0 py-2 pl-12 focus:outline-none hover:bg-pink-600 rounded text-sm"> 登録</button>
                             </div>
                             <!-- 戻るボタン -->
 

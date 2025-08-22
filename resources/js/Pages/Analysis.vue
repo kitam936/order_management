@@ -54,6 +54,36 @@
             console.log(e.message)
         }
     }
+
+   // 🔹 検索条件クリア
+    const clearFilters = async () => {
+        try {
+            // form の選択条件をリセット
+            form.customer_id = '';
+            form.car_category_id = '';
+
+            // 再検索
+            await axios.get('/api/analysis', {
+                params:{
+                    startDate: form.startDate,
+                    endDate: form.endDate,
+                    type: form.type,
+                    customer_id: form.customer_id,
+                    car_category_id: form.car_category_id
+                }
+            })
+            .then(res => {
+                data.data = res.data.data;
+                data.labels = res.data.labels;
+                data.totals = res.data.totals;
+                // ✅ ここは API から受け取ったまま使う
+                data.customers = res.data.customers;
+                data.car_categories = res.data.car_categories;
+            })
+        } catch(e) {
+            console.log(e.message)
+        }
+    };
     </script>
 
     <template>
@@ -96,7 +126,7 @@
                                     <input v-model="form.endDate" type="date" class="h-8 w-40 rounded border focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0 px-1 leading-8 transition-colors duration-200 ease-in-out" />
                                     </div>
                                     <div class="flex items-center ml-4">
-                                    <label class="ml-3 mr-2">期間検索から絞り込み:</label>
+                                    <label class="ml-3 mr-2">期間検索から絞込:</label>
                                     <!-- User選択 -->
                                     <div class="flex">
                                     <div class="relative ">
@@ -122,8 +152,8 @@
                                 </div>
                                 <br>
 
-                                <button type="submit" class="w-32 ml-2 px-4 py-2 bg-blue-500 text-white rounded">分析</button>
-
+                                <button type="submit" class="w-32 ml-16 h-8 px-4 bg-blue-500 text-white rounded">分析</button>
+                                <button @click="clearFilters" class="ml-12 w-32 h-8 bg-gray-500 text-white px-3 py-1 rounded">絞込条件クリア</button>
                             </form>
 
                             <Chart v-show="data.data.length" :data="data" />
