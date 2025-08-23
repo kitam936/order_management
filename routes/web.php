@@ -45,8 +45,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/pay_edit/{id}', [OrderController::class, 'pay_edit'])->name('pay.edit');
     Route::put('/pay_update/{id}', [OrderController::class, 'pay_update'])->name('pay.update');
     Route::delete('/pay_delete/{id}', [OrderController::class, 'pay_destroy'])->name('pay.destroy');
+    Route::get('/my_order_index', [OrderController::class, 'my_order_index'])->name('orders.my_order_index');
+    Route::get('/my_order_show/{order}', [OrderController::class, 'my_order_show'])->name('orders.my_order_show');
     Route::post('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::get('/reports/{id}', [ReportController::class, 'index'])->name('reports.index2');
+    Route::get('/my_reports/{id}', [ReportController::class, 'my_index'])->name('reports.my_index');
     Route::get('/reports/create/{id}', [ReportController::class, 'create'])->name('reports.create2');
     Route::get('/reports/show/{report}', [ReportController::class, 'show'])->name('reports.show2');
     Route::get('/comments/create/{id}', [CommentController::class, 'comment_create'])->name('comments.create2');
@@ -57,6 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
     Route::get('/order_csv_all', [OrderController::class, 'orderCSV_download_all'])->name('orders.csv_all');
     Route::get('/order_csv', [OrderController::class, 'orderCSV_download'])->name('orders.csv');
+    Route::get('/my_order_csv_all', [OrderController::class, 'my_orderCSV_download_all'])->name('orders.my_csv_all');
+    Route::get('/my_order_csv', [OrderController::class, 'my_orderCSV_download'])->name('orders.my_csv');
     Route::get('/csv-import', [CsvImportController::class, 'index'])->name('csv.import.index');
     Route::post('/csv-import', [CsvImportController::class, 'store'])->name('csv.import.store');
     Route::get('/csv-progress', [CsvImportController::class, 'progress'])->name('csv.import.progress');
