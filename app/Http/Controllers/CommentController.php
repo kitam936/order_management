@@ -64,14 +64,17 @@ class CommentController extends Controller
     {
         $comment_show = DB::table('comments')
         ->join('users', 'users.id', '=', 'comments.user_id')
-        ->select(['comments.id', 'comments.report_id', 'users.name', 'comments.comment', 'comments.created_at'])
+        ->select(['comments.id', 'comments.report_id','comments.user_id', 'users.name', 'comments.comment', 'comments.created_at'])
         ->where('comments.id', $comment->id)
         ->orderBy('comments.created_at', 'desc')
         ->first();
-    // dd($report);
+
+        $login_user = Auth::user()->id;
+    // dd($comment_show, $login_user);
 
     return Inertia::render('Comments/Show', [
         'comment' => $comment_show,
+        'login_user' => $login_user,
     ]);
     }
 

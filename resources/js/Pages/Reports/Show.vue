@@ -8,7 +8,7 @@
     defineProps({
         report : Object,
         comments: Array,
-
+        login_user: Object,
     })
 
     const deleteReport = id => {
@@ -118,7 +118,7 @@
 
                                             </div>
                                         </div>
-                                    <div class="mt-4 mb-2 flex">
+                                    <div v-if="report.staff_id == login_user" class="mt-4 mb-2 flex">
 
                                         <div class="p-2 w-full">
                                             <Link as="button" :href="route('reports.edit',{report:report.id})" class="w-32 h-8 flex mx-auto text-white bg-green-500 border-0 py-2 pl-7 focus:outline-none hover:bg-green-600 rounded text-sm">Report編集</Link>

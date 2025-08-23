@@ -48,6 +48,34 @@ class ReportController extends Controller
 
     }
 
+    public function my_index($id)
+    {
+        $reports = DB::table('reports')
+            ->join('order_details', 'reports.detail_id', '=', 'order_details.id')
+            ->join('users', 'reports.staff_id', '=', 'users.id')
+            ->leftJoin('comments', 'comments.report_id', '=', 'reports.id')
+            ->where('order_details.id', $id)
+            ->groupBy('reports.id','reports.detail_id', 'users.name', 'reports.title', 'reports.report', 'reports.created_at')
+            ->selectRaw('reports.id as report_id,reports.detail_id, users.name as staff_name, reports.title, reports.report, count(comments.id) as comment_cnt, reports.created_at')
+            ->orderBy('reports.created_at', 'desc')
+            ->get();
+
+        $detail = DB::table('order_details')
+            ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
+            ->where('order_details.id', $id)
+            ->select(['order_details.id', 'order_details.order_id','detail_statuses.detail_status_name','detail_info','order_details.created_at'])
+            ->first();
+
+        // dd($reports, $detail);
+
+        return Inertia::render('MyOrders/MyReport_Index', [
+            'reports' => $reports,
+            'detail' => $detail,
+            'id' => $id,
+        ]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -253,6 +281,7 @@ class ReportController extends Controller
         return Inertia::render('Reports/Show', [
             'report' => $report,
             'comments' => $comments,
+            'login_user' => Auth::id(), // 現在のユーザーIDを渡す
         ]);
 
     }

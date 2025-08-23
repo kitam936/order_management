@@ -84,6 +84,67 @@ class OrderController extends Controller
         ]);
     }
 
+    public function my_order_index(Request $request)
+    {
+
+        $customers = DB::table('orders')
+        ->join('users', 'orders.user_id', '=', 'users.id')
+        ->where('orders.user_id', Auth::User()->id)
+        // ->select('id', 'name', 'email', 'postcode', 'address', 'tel')
+        ->select('orders.user_id as id', 'users.name')
+        ->groupBy('orders.user_id', 'users.name')
+        ->distinct()
+        ->orderBy('orders.user_id', 'asc')
+        ->get();
+
+        $car_categories = DB::table('orders')
+        ->join('cars', 'orders.car_id', '=', 'cars.id')
+        ->join('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+        ->where('cars.user_id', Auth::User()->id) // 自分の車のみ
+        ->distinct()
+        ->select('car_category_id as id','car_name',    )
+        ->get();
+
+        $orders = DB::table('orders')
+            ->join('users as customers', 'orders.user_id', '=', 'customers.id')
+            ->join('users as staffs', 'orders.staff_id', '=', 'staffs.id')
+            ->join('cars', 'orders.car_id', '=', 'cars.id')
+            ->join('order_statuses', 'orders.order_status', '=', 'order_statuses.id')
+            ->leftJoin('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->where('cars.user_id', Auth::User()->id) // 自分の車のみ
+            ->where('car_category_id', 'like', '%' . $request->car_category_id . '%')
+            // ->where('orders.user_id',  'like', '%' . $request->customer_id . '%')
+            ->where('customers.name', 'like', '%' . $request->search . '%')
+            ->select(
+                'orders.id as order_id',
+                'orders.car_id',
+                'orders.shop_id',
+                'orders.staff_id',
+                'orders.order_info',
+                'order_statuses.order_status_name',
+                'orders.order_status',
+                'car_categories.car_name',
+                'customers.id as customer_id',
+                'customers.name as customer_name',
+                'staffs.name as staff_name',
+                'cars.car_info',
+                'orders.pitin_date',
+                'orders.order_status'
+            )
+            ->orderBy('orders.pitin_date', 'desc')
+            // ->get();
+            ->paginate(10)
+            ->withQueryString();
+
+            // dd($customers,$orders, $car_categories);
+
+        return Inertia::render('MyOrders/MyOrder_Index', [
+            'orders' => $orders,
+            'customers' => $customers,
+            'car_categories' => $car_categories,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -314,6 +375,102 @@ class OrderController extends Controller
                 'order_total' => $order_total,
             ]);
     }
+
+    public function my_order_show(Order $order)
+    {
+        $order_h = DB::table('orders')
+            ->join('users as customers', 'orders.user_id', '=', 'customers.id')
+            ->join('users as staffs', 'orders.staff_id', '=', 'staffs.id')
+            ->join('cars', 'orders.car_id', '=', 'cars.id')
+            ->join('order_statuses', 'orders.order_status', '=', 'order_statuses.id')
+            ->join('shops', 'orders.shop_id', '=', 'shops.id')
+            ->leftJoin('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->where('orders.id', $order->id)
+            ->select(
+                'orders.id as order_id',
+                'orders.car_id',
+                'orders.shop_id',
+                'orders.staff_id',
+                'orders.order_info',
+                'car_categories.car_name',
+                'customers.id as customer_id',
+                'customers.name as customer_name',
+                'shops.shop_name',
+                'staffs.name as staff_name',
+                'cars.car_info',
+                'orders.pitin_date',
+                'orders.order_status',
+                'order_statuses.order_status_name',
+            )
+            ->first();
+
+        $order_fs = DB::table('order_details')
+            ->join('items', 'order_details.item_id', '=', 'items.id')
+            ->join('detail_statuses', 'order_details.detail_status', '=', 'detail_statuses.id')
+            ->leftjoin('reports', 'order_details.id', '=', 'reports.detail_id')
+            ->where('order_details.order_id', $order->id)
+            ->groupBy(
+                'order_details.id',
+                'order_details.order_id',
+                'order_details.item_id',
+                'items.item_name',
+                'items.item_info',
+                'items.item_price',
+                'order_details.item_pcs',
+                'order_details.item_price',
+                'order_details.work_fee',
+                'order_details.detail_info',
+                'order_details.detail_status',
+                'detail_statuses.detail_status_name',
+                'reports.id',
+            )
+            ->selectRaw(
+                'order_details.id as detail_id,
+                order_details.order_id,
+                order_details.id as order_detail_id,
+                order_details.item_id,
+                items.item_name,
+                items.item_info,
+                items.item_price,
+                order_details.item_pcs,
+                order_details.item_price as sales_price,
+                order_details.work_fee,
+                order_details.detail_info,
+                order_details.detail_status,
+                detail_statuses.detail_status_name,
+                COUNT(reports.id) as report_cnt'
+            )
+            // ->select(
+            //     'order_details.id as detail_id',
+            //     'order_details.order_id',
+            //     'order_details.id as order_detail_id',
+            //     'order_details.item_id',
+            //     'items.item_name',
+            //     'items.item_info',
+            //     'items.item_price',
+            //     'order_details.item_pcs',
+            //     'order_details.item_price as sales_price',
+            //     'order_details.work_fee',
+            //     'order_details.detail_info',
+            //     'order_details.detail_status',
+            //     'detail_statuses.detail_status_name',
+            // )
+            ->distinct()
+            ->get();
+
+        $order_total = DB::table('order_details')
+            ->where('order_id', $order->id)
+            ->sum(DB::raw('item_price * item_pcs + work_fee'));
+
+        // dd($order_h, $order_fs, $order_total);
+
+            return Inertia::render('MyOrders/MyOrder_Show', [
+                'order_h' => $order_h,
+                'order_fs' => $order_fs,
+                'order_total' => $order_total,
+            ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -1367,6 +1524,158 @@ class OrderController extends Controller
             ->join('users as customers', 'orders.user_id', '=', 'customers.id')
             ->where('cars.car_category_id', 'like', '%' . $request->car_category_id . '%')
             ->where('orders.user_id',  'like', '%' . $request->customer_id . '%')
+            ->where('customers.name', 'like', '%' . $request->search . '%')
+            ->select(
+                'orders.shop_id',
+                'cars.id as car_id',
+                'car_categories.car_name',
+                'customers.id',
+                'customers.name as customer_name',
+                'item_categories.item_category_name',
+                'items.id as item_id',
+                'items.item_name',
+                'order_details.item_pcs',
+                'order_details.item_price as sales_price',
+                'order_details.work_fee',
+                'order_details.detail_info',
+                'order_details.workingtime',
+            )
+            ->get();
+
+        // dd($request->order,$orders[0]);
+        $csvHeader = [
+            'shop_id',
+            'car_id',
+            'car_name',
+            'customer_id',
+            'customer_name',
+            'item_category_name',
+            'item_id',
+            'item_name',
+            'item_pcs',
+            'item_price as sales_price',
+            'work_fee',
+            'detail_info',
+            'workingtime',
+
+        ];
+
+        $csvData = $orders->toArray();
+
+        // dd($request,$orders,$csvHeader,$csvData);
+
+        $response = new StreamedResponse(function () use ($csvHeader, $csvData) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, $csvHeader);
+
+            foreach ($csvData as $row) {
+                $row = (array)$row; // 必要に応じてオブジェクトを配列に変換
+                mb_convert_variables('sjis-win', 'utf-8', $row);
+                fputcsv($handle, $row);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="orders.csv"');
+
+        // Status変更
+        // $orders=Order::where('order_status',1)->get();
+        // foreach ($orders as $order) {
+        //     $order->status = 3;
+        //     $order->save();
+        // }
+
+        return $response;
+    }
+
+    public function my_orderCSV_download_all()
+    {
+        $orders = DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('items', 'order_details.item_id', '=', 'items.id')
+            ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+            ->join('cars', 'orders.car_id', '=', 'cars.id')
+            ->join('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->join('users as customers', 'orders.user_id', '=', 'customers.id')
+            ->where('orders.user_id', Auth::id())
+            ->select(
+                'orders.shop_id',
+                'cars.id as car_id',
+                'car_categories.car_name',
+                'customers.id',
+                'customers.name as customer_name',
+                'item_categories.item_category_name',
+                'items.id as item_id',
+                'items.item_name',
+                'order_details.item_pcs',
+                'order_details.item_price as sales_price',
+                'order_details.work_fee',
+                'order_details.detail_info',
+                'order_details.workingtime',
+            )
+            ->get();
+
+        // dd($request->order,$orders[0]);
+        $csvHeader = [
+            'shop_id',
+            'car_id',
+            'car_name',
+            'customer_id',
+            'customer_name',
+            'item_category_name',
+            'item_id',
+            'item_name',
+            'item_pcs',
+            'item_price as sales_price',
+            'work_fee',
+            'detail_info',
+            'workingtime',
+        ];
+
+        $csvData = $orders->toArray();
+
+        // dd($request,$orders,$csvHeader,$csvData);
+
+        $response = new StreamedResponse(function () use ($csvHeader, $csvData) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, $csvHeader);
+
+            foreach ($csvData as $row) {
+                $row = (array)$row; // 必要に応じてオブジェクトを配列に変換
+                mb_convert_variables('sjis-win', 'utf-8', $row);
+                fputcsv($handle, $row);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="orders.csv"');
+
+        // Status変更
+        // $orders=Order::where('order_status',1)->get();
+        // foreach ($orders as $order) {
+        //     $order->status = 3;
+        //     $order->save();
+        // }
+
+        return $response;
+    }
+
+
+    public function my_orderCSV_download(Request $request)
+    {
+        $orders = DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('items', 'order_details.item_id', '=', 'items.id')
+            ->join('item_categories', 'items.item_category_id', '=', 'item_categories.id')
+            ->join('cars', 'orders.car_id', '=', 'cars.id')
+            ->join('car_categories', 'cars.car_category_id', '=', 'car_categories.id')
+            ->join('users as customers', 'orders.user_id', '=', 'customers.id')
+            ->where('cars.car_category_id', 'like', '%' . $request->car_category_id . '%')
+            ->where('orders.user_id', Auth::id())
             ->where('customers.name', 'like', '%' . $request->search . '%')
             ->select(
                 'orders.shop_id',

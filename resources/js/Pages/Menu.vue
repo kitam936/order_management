@@ -60,10 +60,15 @@ const logout = () => {
                                         <Link as="button" :href="route('csv.import.index')" class="w-40 flex mx-auto text-white bg-indigo-500 border-0 h-10 py-2 pl-8 focus:outline-none hover:bg-indigo-600 rounded text-ml">CSVインポート</Link>
                                     </div>
                                 </div>
-                                <!-- ログアウトボタン -->
-                                <button @click="logout" class="w-40 flex ml-2 mt-2 text-white bg-gray-500 h-10 py-2 pl-12 hover:bg-red-gray rounded">
-                                    ログアウト
-                                </button>
+                                <div class="flex ">
+                                    <div class="p-2 ">
+                                        <Link as="button" :href="route('orders.my_order_index')" class="w-40 flex mx-auto text-white bg-indigo-500 border-0 h-10 py-2 pl-12 focus:outline-none hover:bg-indigo-600 rounded text-ml">MyOrder</Link>
+                                    </div>
+                                    <!-- ログアウトボタン -->
+                                    <button @click="logout" class="w-40 flex ml-2 mt-2 text-white bg-gray-500 h-10 py-2 pl-12 hover:bg-red-gray rounded">
+                                        ログアウト
+                                    </button>
+                                </div>
                         </section>
                     </div>
                 </div>
